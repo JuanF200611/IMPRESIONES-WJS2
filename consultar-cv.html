@@ -1,0 +1,50 @@
+
+<div class="cv-container">
+
+    <h1>Curriculums Registrados</h1>
+
+    <!-- FILTROS -->
+    <h2>Buscar Curriculum</h2>
+
+    <div class="grid-datos">
+
+        <div class="field">
+            <label>ID Cliente</label>
+            <input type="text" value="WJS-" id="filtroId">
+        </div>
+
+        <div class="field">
+            <label>Nombre completo</label>
+            <input type="text" id="filtroNombre" placeholder="Ej: Juan Pérez">
+        </div>
+
+        <div class="field">
+            <label>Cédula</label>
+            <input type="text" id="filtroCedula" placeholder="000-0000000-0">
+        </div>
+
+    </div>
+
+    <button onclick="buscarCV()">🔍 Buscar</button>
+
+    <!-- TABLA -->
+    <h2>Resultados</h2>
+
+    <div class="tabla-wrapper">
+        <table class="tabla-cv">
+            <thead>
+                <tr>
+                    <th>ID Cliente</th>
+                    <th>Foto</th>
+                    <th>Cédula</th>
+                    <th>Nombre Completo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tablaCV">
+                <!-- Datos dinámicos -->
+            </tbody>
+        </table>
+    </div>
+
+</div>

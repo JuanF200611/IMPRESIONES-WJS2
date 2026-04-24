@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin | Impresiones WJS</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- CSS Principal -->
+    <link rel="stylesheet" href="admin.css">
+    
+    <!-- JsBarcode para códigos de barras -->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+    <!-- jspdf para crear PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+<div class="dashboard">
+
+    <!-- SIDEBAR - Menú que se puede ocultar/expandir -->
+    <aside class="sidebar" id="sidebar">
+        <div class="user-box">
+            <div class="avatar">
+                <img src="ICONOS/user-default.png" alt="Usuario" id="avatarImg" onerror="this.src='https://ui-avatars.com/api/?name=Usuario&background=7f00ff&color=fff'">
+            </div>
+            <h3 id="nombreUsuario">Cargando...</h3>
+            <span id="rolUsuario">Cargando...</span>
+        </div>
+
+        <nav class="menu">
+            <a onclick="cargar('inicio')" class="active">
+                <i class="fa-solid fa-house"></i> 
+                <span>Inicio</span>
+            </a>
+            <a onclick="cargar('ventas')">
+                <i class="fa-solid fa-cash-register"></i> 
+                <span>Ventas</span>
+            </a>
+            <a onclick="cargar('pedidos')">
+                <i class="fa-solid fa-clipboard-list"></i> 
+                <span>Pedidos Pendientes</span>
+                <span class="badge-novedad" id="pedidosBadge">0</span>
+            </a>
+            <a onclick="cargar('crearCV')">
+                <i class="fa-solid fa-file-circle-plus"></i> 
+                <span>Crear Curriculum</span>
+            </a>
+            <a onclick="cargar('consultarCV')">
+                <i class="fa-solid fa-magnifying-glass"></i> 
+                <span>Consultar Curriculum</span>
+            </a>
+            <a onclick="cargar('servicios')">
+                <i class="fa-solid fa-bolt"></i> 
+                <span>Servicios Públicos</span>
+            </a>
+            <a onclick="cargar('cuentas')">
+                <i class="fa-solid fa-envelope"></i> 
+                <span>Creación de Cuentas Digitales</span>
+            </a>
+            <a onclick="cargar('fundacion')">
+                <i class="fa-solid fa-hand-holding-heart"></i> 
+                <span>Gestión de Fundación</span>
+            </a>
+            <hr>
+            <a onclick="cargar('inventario')">
+                <i class="fa-solid fa-boxes"></i> 
+                <span>Inventario</span>
+            </a>
+            <a onclick="cargar('reportes')">
+                <i class="fa-solid fa-chart-line"></i> 
+                <span>Reportes</span>
+            </a>
+            <a onclick="cargar('usuarios')">
+                <i class="fa-solid fa-users"></i> 
+                <span>Crear Usuarios</span>
+            </a>
+            <a class="logout" onclick="salir()">
+                <i class="fa-solid fa-right-from-bracket"></i> 
+                <span>Salir</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- MAIN - Contenido principal que se expande -->
+    <main class="main" id="main">
+        <header class="topbar">
+            <button class="menu-btn" id="menuToggleBtn" onclick="toggleMenu()">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <h2>Panel Administrativo</h2>
+            
+            <div class="topbar-actions">
+                <div class="notificaciones-icono" onclick="toggleNotificaciones()">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="notificacion-badge" id="notificacionBadge">0</span>
+                </div>
+                <div class="fecha-actual" id="fechaActual"></div>
+            </div>
+        </header>
+
+        <section class="content" id="content">
+            <div class="welcome-container">
+                <h1 id="bienvenida">Bienvenido 👋</h1>
+                <p>Seleccione una opción del menú para comenzar</p>
+            </div>
+        </section>
+    </main>
+
+</div>
+
+<!-- OVERLAY para cerrar menú en móvil -->
+<div id="overlay" class="overlay" onclick="cerrarMenuMovil()"></div>
+
+<!-- MODAL PARA GENERAR ETIQUETAS -->
+<div id="modalEtiquetas" class="modal hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3><i class="fa-solid fa-tag"></i> Generar Etiquetas</h3>
+            <button class="close-modal" onclick="cerrarModalEtiquetas()">
+                <i class="fa-solid fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="producto-info" id="productoEtiquetaInfo"></div>
+            
+            <div class="form-group">
+                <label for="cantidadEtiquetas">Cantidad de etiquetas</label>
+                <input type="number" id="cantidadEtiquetas" min="1" max="50" value="1">
+                <small>Máximo 50 etiquetas por generación</small>
+            </div>
+            
+            <div class="opciones-etiqueta">
+                <h4>Opciones de etiqueta</h4>
+                <label><input type="checkbox" id="incluirNombre" checked> Incluir nombre del producto</label>
+                <label><input type="checkbox" id="incluirId" checked> Incluir ID del producto</label>
+                <label><input type="checkbox" id="incluirPrecio" checked> Incluir precio</label>
+                <label><input type="checkbox" id="incluirLogo" checked> Incluir logo de la empresa</label>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="cerrarModalEtiquetas()">Cancelar</button>
+            <button class="btn-primary" onclick="generarEtiquetas()">Generar PDF</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL DE NOTIFICACIONES -->
+<div id="notificacionesPanel" class="notificaciones-panel hidden">
+    <div class="notificaciones-header">
+        <h4><i class="fa-regular fa-bell"></i> Notificaciones</h4>
+        <button class="close-notificaciones" onclick="toggleNotificaciones()">
+            <i class="fa-solid fa-times"></i>
+        </button>
+    </div>
+    <div class="notificaciones-body" id="notificacionesLista">
+        <div class="loading-notificaciones">Cargando notificaciones...</div>
+    </div>
+    <div class="notificaciones-footer">
+        <button onclick="marcarTodasLeidas()">Marcar todas como leídas</button>
+    </div>
+</div>
+
+<!-- Firebase JS -->
+<script type="module" src="firebase-config.js"></script>
+<!-- Admin JS -->
+<script src="admin.js"></script>
+
+</body>
+</html>

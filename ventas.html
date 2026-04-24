@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ventas - Impresiones WJS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/ventas.css">
+</head>
+<body>
+    <div class="ventas-container">
+        <!-- HEADER -->
+        <div class="ventas-header">
+            <input type="text" id="buscarProducto" placeholder="🔍 Buscar producto por ID o nombre">
+            
+            <select id="filtroCategoria">
+                <option value="">Todas las categorías</option>
+                <option value="papeleria">Papelería</option>
+                <option value="impresiones">Impresiones</option>
+                <option value="toner">Tóner y Tinta</option>
+                <option value="oficina">Oficina</option>
+                <option value="electronica">Electrónica</option>
+                <option value="otros">Otros</option>
+            </select>
+
+            <button id="btnSeleccionarCliente">
+                <i class="fa-solid fa-user"></i> Seleccionar Cliente
+            </button>
+        </div>
+        
+
+        <div class="ventas-body">
+            <!-- PRODUCTOS -->
+            <div class="productos-grid" id="productosGrid">
+                <div class="producto-loading">
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                    <p>Cargando productos...</p>
+                </div>
+            </div>
+
+            <!-- TICKET DE VENTA -->
+            <div class="ticket-container">
+                <div class="ticket-header">
+                    <h2><i class="fa-solid fa-receipt"></i> Ticket de Venta</h2>
+                    <button class="btn-limpiar" id="btnLimpiarTicket">
+                        <i class="fa-solid fa-trash"></i> Limpiar
+                    </button>
+                </div>
+
+                <!-- INFORMACIÓN CLIENTE -->
+                <div class="cliente-info" id="clienteInfo">
+                    <div class="cliente-header">
+                        <span>Cliente: <strong id="clienteNombre">Público general</strong></span>
+                        <button class="btn-cambiar-cliente" id="btnCambiarCliente">
+                            <i class="fa-solid fa-exchange-alt"></i> Cambiar
+                        </button>
+                    </div>
+                    <div id="clienteDetalles">
+                        <p><i class="fa-solid fa-info-circle"></i> Sin detalles del cliente</p>
+                    </div>
+                </div>
+
+                <!-- LISTA DE PRODUCTOS EN TICKET -->
+                <div class="ticket-items" id="ticketItems">
+                    <div class="ticket-vacio">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <p>Agrega productos al carrito</p>
+                    </div>
+                </div>
+
+                <!-- RESUMEN -->
+                <div class="ticket-resumen">
+                    <div class="resumen-item total">
+                        <span><i class="fa-solid fa-money-bill-wave"></i> TOTAL:</span>
+                        <span>RD$ <span id="totalVenta">0.00</span></span>
+                    </div>
+                </div>
+
+                <!-- OPCIONES ADICIONALES -->
+                <div class="opciones-venta">
+                    <label class="opcion-check">
+                        <input type="checkbox" id="pedidoDespues">
+                        <i class="fa-solid fa-truck"></i>
+                        <span>Pedido para despacho</span>
+                    </label>
+                    
+                    <div id="comentarioContainer" style="display: none; margin-top: 10px;">
+                        <textarea id="comentarioPedido" placeholder="📝 Detalles del pedido o dirección de entrega..." rows="3"></textarea>
+                    </div>
+                </div>
+
+                <!-- BOTONES DE ACCIÓN -->
+                <div class="acciones-venta">
+                    <button class="btn-guardar" id="btnGuardarVenta">
+                        <i class="fa-solid fa-save"></i> Guardar Venta
+                    </button>
+                    <button class="btn-cobrar" id="btnCobrarVenta">
+                        <i class="fa-solid fa-cash-register"></i> Cobrar
+                    </button>
+
+<button class="btn-anular" id="btnAnularVenta">
+  <i class="fa-solid fa-ban"></i> Anular Ventas
+</button>
+                </div>
+
+                <!-- VENDEDOR -->
+                <div class="vendedor-info">
+                    <small><i class="fa-solid fa-user-tie"></i> Vendedor: <strong id="vendedorNombre">Cargando...</strong></small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CANTIDAD -->
+    <div class="modal hidden" id="modalCantidad">
+        <div class="modal-content">
+            <h3><i class="fa-solid fa-cube"></i> Cantidad</h3>
+            <div class="cantidad-control">
+                <button id="btnDisminuirCantidad">-</button>
+                <input type="number" id="cantidadInput" min="1" value="1">
+                <button id="btnAumentarCantidad">+</button>
+            </div>
+            <div class="producto-modal-info" id="productoModalInfo">
+                <p id="productoModalNombre"></p>
+                <p id="productoModalPrecio"></p>
+                <p id="productoModalStock"></p>
+            </div>
+            <div class="modal-acciones">
+                <button class="btn-cancelar" id="btnCancelarCantidad">
+                    <i class="fa-solid fa-times"></i> Cancelar
+                </button>
+                <button class="btn-confirmar" id="btnConfirmarCantidad">
+                    <i class="fa-solid fa-check"></i> Agregar al ticket
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CLIENTES -->
+    <div class="modal hidden" id="modalClientes">
+        <div class="modal-content clientes-modal">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-users"></i> Seleccionar Cliente</h3>
+                <button class="btn-cerrar" id="btnCerrarClientes">×</button>
+            </div>
+            
+            <input type="text" id="buscarCliente" placeholder="🔍 Buscar cliente por nombre...">
+            
+            <div class="clientes-lista" id="clientesLista">
+                <!-- Clientes cargados dinámicamente -->
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn-cliente-general" id="btnClienteGeneral">
+                    <i class="fa-solid fa-user"></i> Público general
+                </button>
+            </div>
+        </div>
+    </div>
+<!-- Modal Anular Ventas -->
+<div id="modalAnularVentas" class="modal hidden">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3><i class="fa-solid fa-ban"></i> Anular Ventas</h3>
+      <button id="btnCerrarAnularVentas" class="modal-close">
+        <i class="fa-solid fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>Selecciona una venta para anular. Solo se muestran ventas completadas.</p>
+      
+      <div class="ventas-lista-container">
+        <div id="listaVentasAnular">
+          <!-- Las ventas se cargarán aquí dinámicamente -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Detalles Venta -->
+<div id="modalDetallesVenta" class="modal hidden">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3><i class="fa-solid fa-eye"></i> Detalles de Venta</h3>
+      <button id="btnCerrarDetallesVenta" class="modal-close">
+        <i class="fa-solid fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="detalles-venta-grid">
+        <div class="detalle-item-modal">
+          <h5>ID Venta</h5>
+          <p id="detalleVentaId">#000000</p>
+        </div>
+        <div class="detalle-item-modal">
+          <h5>Fecha y Hora</h5>
+          <p id="detalleVentaFecha">00/00/0000 00:00:00 AM</p>
+        </div>
+        <div class="detalle-item-modal">
+          <h5>Cliente</h5>
+          <p id="detalleVentaCliente">Sin cliente</p>
+        </div>
+        <div class="detalle-item-modal">
+          <h5>Vendedor</h5>
+          <p id="detalleVentaVendedor">Sin vendedor</p>
+        </div>
+        <div class="detalle-item-modal">
+          <h5>Total</h5>
+          <p id="detalleVentaTotal">RD$ 0.00</p>
+        </div>
+        <div class="detalle-item-modal">
+          <h5>Método de Pago</h5>
+          <p id="detalleVentaMetodoPago">No especificado</p>
+        </div>
+        <div class="detalle-item-modal">
+          <h5>Estado</h5>
+          <p id="detalleVentaEstado">Sin estado</p>
+        </div>
+      </div>
+      
+      <div class="productos-lista-modal">
+        <h5>Productos</h5>
+        <div id="detalleVentaProductos">
+          <!-- Los productos se cargarán aquí dinámicamente -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Confirmar Anulación -->
+<div id="modalConfirmarAnular" class="modal hidden">
+  <div class="modal-content">
+    <div class="modal-header" style="background: linear-gradient(135deg, #dc2626, #ef4444);">
+      <h3><i class="fa-solid fa-triangle-exclamation"></i> Confirmar Anulación</h3>
+      <button id="btnCancelarAnular" class="modal-close">
+        <i class="fa-solid fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="confirmacion-anular">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <h4>¿Confirmar Anulación?</h4>
+        <p id="confirmacionAnularTexto">
+          ¿Estás seguro de anular esta venta?
+        </p>
+        
+        <div class="motivo-anulacion">
+          <label for="motivoAnulacion">
+            <i class="fa-solid fa-comment"></i> Motivo de anulación (opcional):
+          </label>
+          <textarea 
+            id="motivoAnulacion" 
+            placeholder="Ej: Error en el precio, cliente canceló, producto no disponible..."
+          ></textarea>
+        </div>
+        
+        <div class="modal-footer">
+          <button id="btnCancelarAnular" class="btn-cancelar">
+            <i class="fa-solid fa-times"></i> Cancelar
+          </button>
+          <button id="btnConfirmarAnular" class="btn-confirmar">
+            <i class="fa-solid fa-ban"></i> Confirmar Anulación
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <!-- MODAL COBRO -->
+    <div class="modal hidden" id="modalCobro">
+        <div class="modal-content cobro-modal">
+            <h3><i class="fa-solid fa-money-bill-wave"></i> Proceso de Cobro</h3>
+            
+            <div class="cobro-info">
+                <p>Total a pagar: <strong>RD$ <span id="totalCobro">0.00</span></strong></p>
+            </div>
+            
+            <div class="metodo-pago">
+                <label class="metodo-item">
+                    <input type="radio" name="metodoPago" value="efectivo" checked>
+                    <i class="fa-solid fa-money-bill"></i>
+                    <span>Efectivo</span>
+                </label>
+                <label class="metodo-item">
+                    <input type="radio" name="metodoPago" value="tarjeta">
+                    <i class="fa-solid fa-credit-card"></i>
+                    <span>Tarjeta</span>
+                </label>
+                <label class="metodo-item">
+                    <input type="radio" name="metodoPago" value="transferencia">
+                    <i class="fa-solid fa-building-columns"></i>
+                    <span>Transferencia</span>
+                </label>
+            </div>
+            
+            <div class="efectivo-container" id="efectivoContainer">
+                <label><i class="fa-solid fa-hand-holding-usd"></i> Recibido:</label>
+                <input type="number" id="efectivoRecibido" placeholder="0.00" step="0.01" min="0">
+                <div class="cambio" id="cambioInfo">
+                    <i class="fa-solid fa-exchange-alt"></i> Cambio: RD$ 0.00
+                </div>
+            </div>
+            
+            <div class="modal-acciones">
+                <button class="btn-cancelar" id="btnCancelarCobro">
+                    <i class="fa-solid fa-times"></i> Cancelar
+                </button>
+                <button class="btn-confirmar" id="btnFinalizarCobro">
+                    <i class="fa-solid fa-check-circle"></i> Finalizar Venta
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="ventas.js"></script>
+</body>
+</html>

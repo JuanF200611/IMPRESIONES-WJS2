@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Fundación Francisco Lorenzo - Clientes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #3498db;
+            --secondary: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --dark: #2c3e50;
+            --light: #f8f9fa;
+            --water: #00a8ff;
+            --course: #9b59b6;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo i {
+            font-size: 60px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .logo h1 {
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #eee;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52,152,219,0.1);
+        }
+
+        .btn {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #27ae60;
+            transform: translateY(-2px);
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-danger {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Dashboard Cliente */
+        .dashboard {
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            width: 100%;
+            max-width: 1200px;
+            min-height: 600px;
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--course));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .menu-card {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .menu-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .menu-card.water:hover { border-color: var(--water); }
+        .menu-card.courses:hover { border-color: var(--course); }
+
+        .menu-card i {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .menu-card.water i { color: var(--water); }
+        .menu-card.courses i { color: var(--course); }
+
+        .menu-card h3 {
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .menu-card p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .deuda-badge {
+            background: var(--danger);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .al-dia-badge {
+            background: var(--secondary);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .section-title {
+            margin: 30px 0 20px;
+            color: var(--dark);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .curso-card {
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 16px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+
+        .curso-card:hover {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-color: var(--course);
+        }
+
+        .curso-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .curso-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .curso-meta {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .btn-inscribir {
+            background: var(--course);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            width: 100%;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+
+        .btn-inscribir:hover {
+            background: #8e44ad;
+            transform: translateY(-2px);
+        }
+
+        .btn-inscribir:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .btn-inscrito {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            width: 100%;
+            font-weight: 600;
+            margin-top: 15px;
+            cursor: default;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 16px;
+            border: 1px solid #eee;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px;
+            text-align: left;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .badge {
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .badge.pagado { background: #d4edda; color: #155724; }
+        .badge.pendiente { background: #fff3cd; color: #856404; }
+        .badge.atrasado { background: #f8d7da; color: #721c24; }
+
+        .loading {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .whatsapp-btn {
+            background: #25D366;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                padding: 20px;
+            }
+            
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Form -->
+    <div class="login-container" id="loginContainer">
+        <div class="logo">
+            <i class="fa-solid fa-hand-holding-heart"></i>
+            <h1>Fundación Francisco</h1>
+            <p>Lorenzo de la Rosa</p>
+        </div>
+        
+        <div id="loginAlert" class="alert alert-danger hidden">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <span id="alertMessage">Usuario o contraseña incorrectos</span>
+        </div>
+
+        <form id="loginForm" onsubmit="event.preventDefault(); iniciarSesion();">
+            <div class="form-group">
+                <label><i class="fa-solid fa-user"></i> Usuario</label>
+                <input type="text" id="usuario" class="form-control" placeholder="Ej: FUM-0001" required>
+            </div>
+            <div class="form-group">
+                <label><i class="fa-solid fa-lock"></i> Contraseña</label>
+                <input type="password" id="password" class="form-control" placeholder="Ingrese su contraseña" required>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <i class="fa-solid fa-right-to-bracket"></i> Iniciar Sesión
+            </button>
+        </form>
+        <p style="text-align: center; margin-top: 20px; color: #666; font-size: 13px;">
+            <i class="fa-solid fa-shield"></i> Portal exclusivo para beneficiarios
+        </p>
+    </div>
+
+    <!-- Dashboard Cliente -->
+    <div class="dashboard" id="dashboardContainer">
+        <div class="dashboard-header">
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <div>
+                    <h2 id="clienteNombre">Cargando...</h2>
+                    <p id="clienteInfo" style="color: #666;">Cargando información...</p>
+                </div>
+            </div>
+            <button class="btn btn-danger" onclick="cerrarSesion()" style="width: auto;">
+                <i class="fa-solid fa-sign-out-alt"></i> Salir
+            </button>
+        </div>
+
+        <div id="dashboardContent">
+            <!-- Contenido dinámico -->
+            <div style="text-align: center; padding: 50px;">
+                <div class="loading"></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import {
+            getDatabase,
+            ref,
+            get,
+            push,
+            update,
+            query,
+            orderByChild,
+            equalTo
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        // Configuración de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyB3xTYP7wKgvFvySX8ZkHqm0Tly8y4LcM4",
+            authDomain: "imprecioneswjs.firebaseapp.com",
+            databaseURL: "https://imprecioneswjs-default-rtdb.firebaseio.com",
+            projectId: "imprecioneswjs",
+            storageBucket: "imprecioneswjs.appspot.com",
+            appId: "1:923402098800:web:ef57d1e1bf1fdd758a3cb5"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        let clienteActual = null;
+        let cursosDisponibles = [];
+        let misInscripciones = [];
+
+        // ================= FUNCIONES DE LOGIN =================
+        window.iniciarSesion = async function() {
+            const usuario = document.getElementById('usuario').value.trim().toUpperCase();
+            const password = document.getElementById('password').value.trim();
+            const loginAlert = document.getElementById('loginAlert');
+            const alertMessage = document.getElementById('alertMessage');
+
+            if (!usuario || !password) {
+                alertMessage.textContent = 'Por favor ingrese usuario y contraseña';
+                loginAlert.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                const snapshot = await get(ref(db, 'usuarios_fundacion'));
+                
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    let encontrado = false;
+
+                    for (const key in data) {
+                        const cliente = data[key];
+                        // Comparar usuario (case insensitive) y contraseña
+                        if (cliente.usuario && cliente.usuario.toUpperCase() === usuario && cliente.password === password) {
+                            clienteActual = {
+                                firebaseKey: key,
+                                ...cliente
+                            };
+                            encontrado = true;
+                            break;
+                        }
+                    }
+
+                    if (encontrado) {
+                        document.getElementById('loginContainer').style.display = 'none';
+                        document.getElementById('dashboardContainer').style.display = 'block';
+                        await cargarDashboardCliente();
+                    } else {
+                        alertMessage.textContent = 'Usuario o contraseña incorrectos';
+                        loginAlert.classList.remove('hidden');
+                    }
+                } else {
+                    alertMessage.textContent = 'No hay usuarios registrados';
+                    loginAlert.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Error en login:', error);
+                alertMessage.textContent = 'Error al conectar con el servidor';
+                loginAlert.classList.remove('hidden');
+            }
+        };
+
+        // ================= FUNCIONES DEL DASHBOARD CLIENTE =================
+        async function cargarDashboardCliente() {
+            if (!clienteActual) return;
+
+            document.getElementById('clienteNombre').textContent = clienteActual.nombre || 'Cliente';
+            
+            let tipoInfo = '';
+            if (clienteActual.tipo === 'agua' || (clienteActual.zona && !clienteActual.tipo)) {
+                tipoInfo = '💧 Beneficiario Proyecto Agua';
+            } else if (clienteActual.tipo === 'curso') {
+                tipoInfo = '📚 Participante de Cursos';
+            } else if (clienteActual.tipo === 'ambos') {
+                tipoInfo = '💧📚 Beneficiario de Ambos Programas';
+            }
+            
+            document.getElementById('clienteInfo').innerHTML = `<i class="fa-solid fa-id-card"></i> ${clienteActual.usuario} | ${tipoInfo}`;
+
+            await cargarCursosDisponibles();
+            await cargarMisInscripciones();
+            renderDashboardInicio();
+        }
+
+        async function cargarCursosDisponibles() {
+            try {
+                const snapshot = await get(ref(db, 'cursos_fundacion'));
+                cursosDisponibles = [];
+                
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    const ahora = new Date();
+                    
+                    for (const key in data) {
+                        const curso = data[key];
+                        // Solo cursos activos con fecha futura
+                        if (curso.activo !== false && new Date(curso.fechaFin) >= ahora) {
+                            cursosDisponibles.push({
+                                firebaseKey: key,
+                                ...curso
+                            });
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Error cargando cursos:', error);
+            }
+        }
+
+        async function cargarMisInscripciones() {
+            try {
+                const snapshot = await get(ref(db, 'inscripciones_fundacion'));
+                misInscripciones = [];
+                
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    for (const key in data) {
+                        const inscripcion = data[key];
+                        if (inscripcion.clienteId === clienteActual.firebaseKey && inscripcion.activo !== false) {
+                            misInscripciones.push({
+                                firebaseKey: key,
+                                ...inscripcion
+                            });
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Error cargando inscripciones:', error);
+            }
+        }
+
+        async function renderDashboardInicio() {
+            const content = document.getElementById('dashboardContent');
+            
+            // Determinar qué servicios tiene el cliente
+            const tieneAgua = clienteActual.tipo === 'agua' || clienteActual.tipo === 'ambos' || clienteActual.zona;
+            const tieneCursos = clienteActual.tipo === 'curso' || clienteActual.tipo === 'ambos';
+            
+            // Verificar deuda actual
+            const deuda = clienteActual.deuda || 0;
+            
+            let html = `
+                <div class="info-card">
+                    <h3 style="margin-bottom: 15px;">¡Bienvenido, ${clienteActual.nombre}!</h3>
+                    <p style="opacity: 0.9; margin-bottom: 10px;">
+                        <i class="fa-solid fa-calendar"></i> Último acceso: ${new Date().toLocaleDateString()}
+                    </p>
+                    <p style="opacity: 0.9; margin-bottom: 10px;">
+                        <i class="fa-solid fa-whatsapp"></i> WhatsApp: ${clienteActual.whatsapp || 'No registrado'}
+                    </p>
+            `;
+            
+            if (tieneAgua) {
+                html += `
+                    <p style="opacity: 0.9; margin-bottom: 10px;">
+                        <i class="fa-solid fa-water"></i> Último pago: ${clienteActual.ultimoPago ? new Date(clienteActual.ultimoPago).toLocaleDateString() : 'No registra'}
+                    </p>
+                    <p style="opacity: 0.9; margin-bottom: 10px;">
+                        <i class="fa-solid fa-dollar-sign"></i> Monto mensual: RD$ ${clienteActual.montoMensual || 500}
+                    </p>
+                `;
+                
+                if (deuda > 0) {
+                    html += `<div class="deuda-badge"><i class="fa-solid fa-exclamation-triangle"></i> Deuda pendiente: RD$ ${deuda}</div>`;
+                } else {
+                    html += `<div class="al-dia-badge"><i class="fa-solid fa-circle-check"></i> Al día con sus pagos</div>`;
+                }
+            }
+            
+            html += `</div>`;
+
+            // Menú de servicios disponibles
+            html += `<h3 style="margin-bottom: 20px; color: var(--dark);">Mis Servicios</h3>`;
+            html += `<div class="menu-grid">`;
+            
+            if (tieneAgua) {
+                html += `
+                    <div class="menu-card water" onclick="mostrarEstadoAgua()">
+                        <i class="fa-solid fa-water"></i>
+                        <h3>Proyecto Agua</h3>
+                        <p>Consulte su estado de cuenta y pagos realizados</p>
+                        ${deuda > 0 ? '<span style="color: var(--danger); font-size: 13px; margin-top: 10px; display: block;"><i class="fa-solid fa-clock"></i> Tiene pagos pendientes</span>' : ''}
+                    </div>
+                `;
+            }
+            
+            if (tieneCursos) {
+                const cursosInscritos = misInscripciones.length;
+                html += `
+                    <div class="menu-card courses" onclick="mostrarCursos()">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <h3>Cursos y Talleres</h3>
+                        <p>Inscríbase en nuestros cursos disponibles</p>
+                        <span style="color: var(--course); font-size: 13px; margin-top: 10px; display: block;">
+                            <i class="fa-solid fa-clock"></i> ${cursosDisponibles.length} cursos disponibles
+                        </span>
+                        ${cursosInscritos > 0 ? `<span style="color: var(--secondary); font-size: 13px; margin-top: 5px; display: block;">
+                            <i class="fa-solid fa-check-circle"></i> ${cursosInscritos} curso(s) inscrito(s)
+                        </span>` : ''}
+                    </div>
+                `;
+            }
+            
+            html += `</div>`;
+
+            // Sección de cursos disponibles (si aplica)
+            if (tieneCursos && cursosDisponibles.length > 0) {
+                html += `<h3 class="section-title">📚 Cursos Disponibles para Inscripción</h3>`;
+                html += `<div class="card-grid" id="cursosGrid">`;
+                
+                for (const curso of cursosDisponibles) {
+                    const yaInscrito = misInscripciones.some(i => i.cursoId === curso.firebaseKey);
+                    const fechaInicio = new Date(curso.fechaInicio).toLocaleDateString();
+                    const inscritos = curso.inscritos || 0;
+                    const cupo = curso.cupo || 30;
+                    
+                    html += `
+                        <div class="curso-card">
+                            <div class="curso-header">
+                                <span class="curso-title">${curso.nombre}</span>
+                                <span style="background: var(--course); color: white; padding: 5px 12px; border-radius: 30px; font-size: 12px;">
+                                    ${inscritos}/${cupo}
+                                </span>
+                            </div>
+                            <div class="curso-meta">
+                                <span><i class="fa-solid fa-calendar"></i> Inicio: ${fechaInicio}</span>
+                                <span><i class="fa-solid fa-clock"></i> ${curso.hora || '09:00'}</span>
+                            </div>
+                            <p style="color: #666; margin: 10px 0; font-size: 14px;">${curso.descripcion || 'Curso ofrecido por la fundación'}</p>
+                    `;
+                    
+                    if (yaInscrito) {
+                        html += `<button class="btn-inscrito" disabled><i class="fa-solid fa-check"></i> Ya estás inscrito</button>`;
+                    } else {
+                        html += `<button class="btn-inscribir" onclick="inscribirCurso('${curso.firebaseKey}')">📝 Inscribirme</button>`;
+                    }
+                    
+                    html += `</div>`;
+                }
+                
+                html += `</div>`;
+            }
+
+            content.innerHTML = html;
+        }
+
+        window.mostrarEstadoAgua = async function() {
+            const content = document.getElementById('dashboardContent');
+            
+            try {
+                const pagosSnapshot = await get(ref(db, 'pagos_agua'));
+                let pagosCliente = [];
+
+                if (pagosSnapshot.exists()) {
+                    const data = pagosSnapshot.val();
+                    for (const key in data) {
+                        if (data[key].clienteId === clienteActual.firebaseKey) {
+                            pagosCliente.push({
+                                firebaseKey: key,
+                                ...data[key]
+                            });
+                        }
+                    }
+                }
+
+                pagosCliente.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+
+                let html = `
+                    <button class="btn btn-primary" onclick="renderDashboardInicio()" style="width: auto; margin-bottom: 20px;">
+                        <i class="fa-solid fa-arrow-left"></i> Volver
+                    </button>
+
+                    <h3 class="section-title">
+                        <span><i class="fa-solid fa-water" style="color: var(--water);"></i> Estado de Cuenta - Proyecto Agua</span>
+                    </h3>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
+                        <div style="background: #f8f9fa; padding: 20px; border-radius: 16px;">
+                            <h4 style="color: #666; margin-bottom: 10px;">Resumen de Deuda</h4>
+                            <p style="font-size: 32px; font-weight: bold; color: ${clienteActual.deuda > 0 ? '#e74c3c' : '#27ae60'};">
+                                RD$ ${clienteActual.deuda || 0}
+                            </p>
+                            <p style="color: #666;">Deuda actual</p>
+                        </div>
+                        <div style="background: #f8f9fa; padding: 20px; border-radius: 16px;">
+                            <h4 style="color: #666; margin-bottom: 10px;">Información</h4>
+                            <p><i class="fa-solid fa-calendar"></i> Ciclo de facturación: Día ${clienteActual.diaCorte || 25}</p>
+                            <p><i class="fa-solid fa-location-dot"></i> Zona: ${clienteActual.zona || 'No asignada'}</p>
+                            <p><i class="fa-solid fa-dollar-sign"></i> Cuota mensual: RD$ ${clienteActual.montoMensual || 500}</p>
+                        </div>
+                    </div>
+
+                    <h4 style="margin-bottom: 15px;">Historial de Pagos</h4>
+                `;
+
+                if (pagosCliente.length === 0) {
+                    html += `
+                        <div style="text-align: center; padding: 60px; background: #f8f9fa; border-radius: 16px;">
+                            <i class="fa-solid fa-receipt" style="font-size: 60px; color: #ccc;"></i>
+                            <h3 style="margin: 20px 0; color: #666;">No hay pagos registrados</h3>
+                            <p style="color: #999;">Los pagos aparecerán aquí una vez sean procesados por la administración</p>
+                        </div>
+                    `;
+                } else {
+                    html += `
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Monto</th>
+                                        <th>Período</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                    `;
+
+                    pagosCliente.forEach(pago => {
+                        const mes = pago.mes ? new Date(2000, pago.mes-1).toLocaleString('es', { month: 'long' }) : 'N/A';
+                        html += `
+                            <tr>
+                                <td>${new Date(pago.fecha).toLocaleDateString()}</td>
+                                <td><strong>RD$ ${pago.monto.toFixed(2)}</strong></td>
+                                <td>${mes.charAt(0).toUpperCase() + mes.slice(1)} ${pago.año || ''} ${pago.adelantado ? '(Adelantado)' : ''}</td>
+                                <td><span class="badge pagado">Pagado</span></td>
+                            </tr>
+                        `;
+                    });
+
+                    html += `
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                }
+
+                content.innerHTML = html;
+            } catch (error) {
+                console.error('Error cargando estado de agua:', error);
+                content.innerHTML = `<p style="color: red;">Error cargando datos: ${error.message}</p>`;
+            }
+        };
+
+        window.mostrarCursos = async function() {
+            const content = document.getElementById('dashboardContent');
+            
+            await cargarMisInscripciones();
+            
+            let html = `
+                <button class="btn btn-primary" onclick="renderDashboardInicio()" style="width: auto; margin-bottom: 20px;">
+                    <i class="fa-solid fa-arrow-left"></i> Volver
+                </button>
+
+                <h3 class="section-title">
+                    <span><i class="fa-solid fa-graduation-cap" style="color: var(--course);"></i> Mis Cursos y Talleres</span>
+                </h3>
+            `;
+
+            // Mis cursos inscritos
+            if (misInscripciones.length > 0) {
+                html += `<h4 style="margin: 20px 0 10px;">📋 Cursos en los que estoy inscrito</h4>`;
+                html += `<div class="card-grid">`;
+                
+                for (const inscripcion of misInscripciones) {
+                    const curso = cursosDisponibles.find(c => c.firebaseKey === inscripcion.cursoId) || 
+                                 { nombre: inscripcion.cursoNombre, fechaInicio: inscripcion.fechaInicio, hora: 'N/A' };
+                    
+                    html += `
+                        <div class="curso-card" style="border-color: var(--secondary);">
+                            <div class="curso-header">
+                                <span class="curso-title">${curso.nombre}</span>
+                                <span class="badge pagado"><i class="fa-solid fa-check"></i> Inscrito</span>
+                            </div>
+                            <div class="curso-meta">
+                                <span><i class="fa-solid fa-calendar"></i> Inicio: ${new Date(curso.fechaInicio).toLocaleDateString()}</span>
+                                <span><i class="fa-solid fa-clock"></i> ${curso.hora || '09:00'}</span>
+                            </div>
+                            <p style="color: #666; margin: 10px 0; font-size: 14px;">
+                                Inscrito el: ${new Date(inscripcion.fechaInscripcion).toLocaleDateString()}
+                            </p>
+                            <button class="whatsapp-btn" onclick="contactarFundacion('${curso.nombre}')" style="width: 100%;">
+                                <i class="fa-brands fa-whatsapp"></i> Contactar para más info
+                            </button>
+                        </div>
+                    `;
+                }
+                
+                html += `</div>`;
+            } else {
+                html += `
+                    <div style="text-align: center; padding: 40px; background: #f8f9fa; border-radius: 16px; margin-bottom: 30px;">
+                        <i class="fa-solid                        <i class="fa-solid fa-book-open" style="font-size: 60px; color: #ccc;"></i>
+                        <h3 style="margin: 20px 0; color: #666;">No estás inscrito en ningún curso</h3>
+                        <p style="color: #999;">Revisa los cursos disponibles e inscríbete</p>
+                    </div>
+                `;
+            }
+
+            // Cursos disponibles para inscripción
+            if (cursosDisponibles.length > 0) {
+                html += `<h4 style="margin: 30px 0 10px;">📚 Cursos Disponibles</h4>`;
+                html += `<div class="card-grid">`;
+                
+                for (const curso of cursosDisponibles) {
+                    const yaInscrito = misInscripciones.some(i => i.cursoId === curso.firebaseKey);
+                    if (yaInscrito) continue; // No mostrar cursos ya inscritos
+                    
+                    const fechaInicio = new Date(curso.fechaInicio).toLocaleDateString();
+                    const inscritos = curso.inscritos || 0;
+                    const cupo = curso.cupo || 30;
+                    
+                    html += `
+                        <div class="curso-card">
+                            <div class="curso-header">
+                                <span class="curso-title">${curso.nombre}</span>
+                                <span style="background: var(--course); color: white; padding: 5px 12px; border-radius: 30px; font-size: 12px;">
+                                    ${inscritos}/${cupo}
+                                </span>
+                            </div>
+                            <div class="curso-meta">
+                                <span><i class="fa-solid fa-calendar"></i> Inicio: ${fechaInicio}</span>
+                                <span><i class="fa-solid fa-clock"></i> ${curso.hora || '09:00'}</span>
+                                <span><i class="fa-solid fa-hourglass-half"></i> ${curso.tiempoEstimado || 20}h</span>
+                            </div>
+                            <p style="color: #666; margin: 10px 0; font-size: 14px;">${curso.descripcion || 'Curso ofrecido por la fundación'}</p>
+                            <button class="btn-inscribir" onclick="inscribirCurso('${curso.firebaseKey}')">
+                                📝 Inscribirme
+                            </button>
+                        </div>
+                    `;
+                }
+                
+                html += `</div>`;
+            } else {
+                html += `
+                    <div style="text-align: center; padding: 40px; background: #f8f9fa; border-radius: 16px; margin-top: 30px;">
+                        <i class="fa-solid fa-calendar-xmark" style="font-size: 60px; color: #ccc;"></i>
+                        <h3 style="margin: 20px 0; color: #666;">No hay cursos disponibles</h3>
+                        <p style="color: #999;">Próximamente estaremos ofreciendo nuevos talleres</p>
+                    </div>
+                `;
+            }
+
+            content.innerHTML = html;
+        };
+
+        window.inscribirCurso = async function(cursoId) {
+            const curso = cursosDisponibles.find(c => c.firebaseKey === cursoId);
+            if (!curso) return;
+
+            // Verificar si ya está inscrito
+            const yaInscrito = misInscripciones.some(i => i.cursoId === cursoId);
+            if (yaInscrito) {
+                alert('Ya estás inscrito en este curso');
+                return;
+            }
+
+            if (!confirm(`¿Desea inscribirse en el curso "${curso.nombre}"?`)) {
+                return;
+            }
+
+            try {
+                // Registrar inscripción
+                const inscripcion = {
+                    clienteId: clienteActual.firebaseKey,
+                    clienteNombre: clienteActual.nombre,
+                    clienteUsuario: clienteActual.usuario,
+                    whatsapp: clienteActual.whatsapp || '',
+                    cursoId: cursoId,
+                    cursoNombre: curso.nombre,
+                    fechaInscripcion: new Date().toISOString(),
+                    activo: true,
+                    fechaInicio: curso.fechaInicio,
+                    fechaFin: curso.fechaFin
+                };
+
+                await push(ref(db, 'inscripciones_fundacion'), inscripcion);
+
+                // Actualizar contador de inscritos en el curso
+                const nuevosInscritos = (curso.inscritos || 0) + 1;
+                await update(ref(db, `cursos_fundacion/${cursoId}`), {
+                    inscritos: nuevosInscritos
+                });
+
+                alert('¡Inscripción exitosa!');
+
+                // Enviar WhatsApp de confirmación si tiene número
+                if (clienteActual.whatsapp) {
+                    const mensaje = `*FUNDACIÓN FRANCISCO LORENZO DE LA ROSA*
+*CONFIRMACIÓN DE INSCRIPCIÓN*
+
+Estimado/a *${clienteActual.nombre}*, su inscripción ha sido exitosa.
+
+📚 *Curso:* ${curso.nombre}
+📅 *Fecha de inicio:* ${new Date(curso.fechaInicio).toLocaleDateString()}
+🕐 *Hora:* ${curso.hora || '09:00 AM'}
+
+Le estaremos contactando con más información.
+¡Gracias por confiar en nosotros! 🙏`;
+
+                    const whatsappUrl = `https://wa.me/${clienteActual.whatsapp}?text=${encodeURIComponent(mensaje)}`;
+                    window.open(whatsappUrl, '_blank');
+                }
+
+                // Recargar datos
+                await cargarMisInscripciones();
+                mostrarCursos();
+
+            } catch (error) {
+                console.error('Error inscribiendo:', error);
+                alert('Error al realizar la inscripción. Por favor intente más tarde.');
+            }
+        };
+
+        window.contactarFundacion = function(cursoNombre) {
+            const mensaje = `Hola, soy ${clienteActual.nombre}. Quisiera más información sobre el curso "${cursoNombre}".`;
+            const whatsappUrl = `https://wa.me/18095551212?text=${encodeURIComponent(mensaje)}`; // Número de la fundación
+            window.open(whatsappUrl, '_blank');
+        };
+
+        window.cerrarSesion = function() {
+            clienteActual = null;
+            document.getElementById('dashboardContainer').style.display = 'none';
+            document.getElementById('loginContainer').style.display = 'block';
+            document.getElementById('usuario').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('loginAlert').classList.add('hidden');
+        };
+
+        // Inicializar
+        window.onload = function() {
+            console.log('Sistema clientes Fundación listo');
+        };
+    </script>
+</body>
+</html>

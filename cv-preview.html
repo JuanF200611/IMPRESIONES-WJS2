@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Vista previa CV</title>
+<link rel="stylesheet" href="plantillas/clasica.css">
+<script src="libs/html2pdf.bundle.min.js"></script>
+<script defer src="cv.js"></script>
+</head>
+<body>
+
+<div id="cv">
+    <div class="left">
+        <img id="foto">
+        <h2 id="pNombre"></h2>
+        <p id="pContacto"></p>
+    </div>
+
+    <div class="right">
+        <h3>OBJETIVO</h3>
+        <p id="pObjetivo"></p>
+    </div>
+</div>
+
+<button onclick="exportarPDF()">📄 Exportar PDF</button>
+<button onclick="window.close()">⬅ Volver</button>
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+.cv-container .tabla-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.cv-container .tabla-cv {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.cv-container .tabla-cv th,
+.cv-container .tabla-cv td {
+    padding: 14px;
+    text-align: center;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.cv-container .tabla-cv th {
+    background: #f4f6f8;
+    color: #333;
+    font-weight: bold;
+}
+
+.cv-container .tabla-cv img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* ACCIONES */
+.cv-container .acciones-btn {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.cv-container .acciones-btn button {
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.cv-container .btn-ver { background: #00c6ff; }
+.cv-container .btn-editar { background: #7f00ff; }
+.cv-container .btn-eliminar { background: #ff4d4d; }
+.cv-container .btn-imprimir { background: #4caf50; }
+.cv-container .btn-pdf {
+    background: #999;
+    cursor: not-allowed;
+}

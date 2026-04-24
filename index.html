@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login | Impresiones WJS</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+body{
+    min-height:100vh;
+    background:#f2f2f2;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+.login-container{
+    width:100%;
+    max-width:1000px;
+    background:#fff;
+    border-radius:18px;
+    overflow:hidden;
+    display:flex;
+    box-shadow:0 15px 40px rgba(0,0,0,.2);
+}
+.login-form,.register-form{
+    width:50%;
+    padding:40px;
+    text-align:center;
+}
+.logo{width:160px;margin-bottom:20px;}
+h2{margin-bottom:10px;}
+p{color:#666;margin-bottom:20px;}
+
+input{
+    width:100%;
+    padding:12px;
+    margin-bottom:12px;
+    border-radius:30px;
+    border:1px solid #ccc;
+    outline:none;
+}
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:30px;
+    background:linear-gradient(45deg,#ff0066,#7f00ff,#00c6ff);
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+.switch{
+    margin-top:15px;
+    font-size:13px;
+    color:#007bff;
+    cursor:pointer;
+}
+.login-banner{
+    width:50%;
+    background:linear-gradient(135deg,#ff0066,#7f00ff,#00c6ff);
+    color:white;
+    padding:60px 40px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+.hidden{display:none;}
+
+.modal{
+    position:fixed;
+    top:0;left:0;width:100%;height:100%;
+    background:rgba(0,0,0,.6);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+.modal.hidden{display:none;}
+
+.modal-content{
+    background:#fff;
+    padding:30px;
+    border-radius:15px;
+    text-align:center;
+    width:90%;
+    max-width:350px;
+}
+
+@media(max-width:768px){
+    .login-container{flex-direction:column;}
+    .login-form,.register-form,.login-banner{width:100%;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-container">
+
+<div class="login-form" id="loginBox">
+    <img src="ICONOS/LOGO.JPG" class="logo">
+    <h2>Iniciar Sesión</h2>
+
+    <input id="loginUser" value="WJS-" placeholder="WJS-0001">
+    <input id="loginPass" type="password">
+
+    <button onclick="login()">Entrar</button>
+    <div class="switch" onclick="mostrarRegistro()">¿No tienes cuenta? Regístrate</div>
+</div>
+
+<div class="register-form hidden" id="registerBox">
+    <h2>Registro de Cliente</h2>
+
+    <input id="regNombre" placeholder="Nombre">
+    <input id="regApellido" placeholder="Apellido">
+    <input id="regTelefono" placeholder="Telefonos">
+    <input id="regDireccion"placeholder="Direccion">
+    <input id="regClave" type="password" placeholder="Clave">
+
+    <button onclick="registrar()">Registrar</button>
+    <div class="switch" onclick="mostrarLogin()">Volver</div>
+</div>
+
+<div class="login-banner">
+    <h1>Impresiones WJS</h1>
+</div>
+</div>
+
+<div id="modal" class="modal hidden">
+<div class="modal-content">
+<h2>Registro exitoso</h2>
+<p>Usuario: <span id="mUser"></span></p>
+<p>Clave: <span id="mPass"></span></p>
+<button onclick="cerrarModal()">OK</button>
+</div>
+</div>
+
+<!-- ================= FIREBASE ================= -->
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "TU_API_KEY",
+  authDomain: "imprecioneswjs.firebaseapp.com",
+  databaseURL: "https://imprecioneswjs-default-rtdb.firebaseio.com",
+  projectId: "imprecioneswjs",
+  storageBucket: "imprecioneswjs.appspot.com",
+  appId: "1:923402098800:web:ef57d1e1bf1fdd758a3cb5"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+/* CREAR ADMINS */
+async function crearAdmins(){
+const admins = [
+ {usuario:"WJS-ADMIN1",nombre:"Juan Lorenzo",clave:"1234",rol:"admin"},
+ {usuario:"WJS-ADMIN2",nombre:"Sarah Lorenzo",clave:"1234",rol:"admin"},
+ {usuario:"WJS-ADMIN3",nombre:"Wendy Lorenzo",clave:"1234",rol:"admin"}
+];
+
+for(let a of admins){
+ let r = ref(db,"usuarios/admin/"+a.usuario);
+ let ex = await get(r);
+ if(!ex.exists()) await set(r,a);
+}
+}
+crearAdmins();
+
+/* REGISTRO */
+window.registrar = async () => {
+
+let nombre = regNombre.value.trim();
+let apellido = regApellido.value.trim();
+let clave = regClave.value;
+
+if(!nombre || !apellido || !clave){
+ alert("Complete campos");
+ return;
+}
+
+/* generar ID */
+let lista = await get(ref(db,"usuarios/clientes"));
+let total = lista.exists() ? Object.keys(lista.val()).length : 0;
+
+let usuario = "WJS-" + String(total+1).padStart(4,"0");
+
+await set(ref(db,"usuarios/clientes/"+usuario),{
+ usuario,nombre,apellido,
+ telefono:regTelefono.value,
+ direccion:regDireccion.value,
+ clave,
+ rol:"cliente"
+});
+
+mUser.innerText = usuario;
+mPass.innerText = clave;
+modal.classList.remove("hidden");
+};
+
+/* LOGIN MODIFICADO PARA GUARDAR EN SESSION */
+window.login = async () => {
+
+let u = loginUser.value.trim();
+let p = loginPass.value;
+
+let a = await get(ref(db,"usuarios/admin/"+u));
+if(a.exists() && a.val().clave===p){
+ // Guardar datos en sessionStorage
+ sessionStorage.setItem('usuarioActual', u);
+ sessionStorage.setItem('nombreUsuario', a.val().nombre);
+ sessionStorage.setItem('rolUsuario', a.val().rol);
+ 
+ location="admin.html";
+ return;
+}
+
+let c = await get(ref(db,"usuarios/clientes/"+u));
+if(c.exists() && c.val().clave===p){
+ // Guardar datos en sessionStorage
+ sessionStorage.setItem('usuarioActual', u);
+ sessionStorage.setItem('nombreUsuario', c.val().nombre);
+ sessionStorage.setItem('rolUsuario', c.val().rol);
+ 
+ location="clientes.html";
+ return;
+}
+
+alert("Usuario o contraseña incorrectos");
+};
+
+</script>
+
+<script>
+function mostrarRegistro(){
+loginBox.classList.add("hidden");
+registerBox.classList.remove("hidden");
+}
+
+function mostrarLogin(){
+registerBox.classList.add("hidden");
+loginBox.classList.remove("hidden");
+}
+
+function cerrarModal(){
+modal.classList.add("hidden");
+mostrarLogin();
+}
+
+loginUser.addEventListener("input",e=>{
+if(!e.target.value.startsWith("WJS-"))
+ e.target.value="WJS-";
+});
+</script>
+
+</body>
+</html>

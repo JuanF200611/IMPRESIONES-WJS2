@@ -1,0 +1,209 @@
+/* =====================
+   CONTENEDOR PRINCIPAL
+===================== */
+.cv-container {
+    max-width: 1000px;
+    margin: auto;
+    background: #ffffff;
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+    font-family: "Segoe UI", sans-serif;
+}
+
+/* =====================
+   TITULOS
+===================== */
+.cv-container h1 {
+    margin-bottom: 20px;
+    color: #0b3c5d;
+}
+
+.cv-container h2 {
+    margin: 30px 0 15px;
+    color: #333;
+    border-left: 5px solid #7f00ff;
+    padding-left: 10px;
+}
+
+/* =====================
+   GRUPOS
+===================== */
+.cv-container .group {
+    margin-bottom: 20px;
+}
+
+.cv-container .group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+/* =====================
+   INPUTS Y TEXTAREA
+===================== */
+.cv-container input,
+.cv-container textarea,
+.cv-container select {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+.cv-container textarea {
+    min-height: 130px;
+    resize: vertical;
+}
+
+.cv-container input:focus,
+.cv-container textarea:focus,
+.cv-container select:focus {
+    outline: none;
+    border-color: #7f00ff;
+    box-shadow: 0 0 0 2px rgba(127,0,255,0.15);
+}
+
+/* =====================
+   GRID DATOS PERSONALES
+===================== */
+.cv-container .grid-datos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.cv-container .field {
+    background: #f9fafb;
+    padding: 12px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+/* =====================
+   GRID CAMPOS DINÁMICOS
+===================== */
+.cv-container .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 15px;
+    margin-bottom: 15px;
+    align-items: center;
+}
+
+/* =====================
+   BOTÓN ELIMINAR
+===================== */
+.cv-container .btn-eliminar {
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.cv-container .btn-eliminar:hover {
+    background: #e63939;
+}
+
+/* =====================
+   BOTONES GENERALES
+===================== */
+.cv-container button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 15px;
+    background: linear-gradient(45deg, #7f00ff, #00c6ff);
+    color: white;
+    transition: 0.3s;
+}
+
+.cv-container button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+/* =====================
+   PLANTILLAS (BOTONES CON IMAGEN)
+===================== */
+.cv-container .plantillas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.cv-container .plantilla {
+    cursor: pointer;
+    border: 3px solid transparent;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    transition: 0.3s;
+    background: white;
+}
+
+.cv-container .plantilla img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.cv-container .plantilla span {
+    display: block;
+    text-align: center;
+    padding: 12px;
+    background: #f4f6f8;
+    font-weight: bold;
+}
+
+.cv-container .plantilla:hover {
+    transform: translateY(-5px);
+}
+
+.cv-container .plantilla.active {
+    border-color: #7f00ff;
+}
+
+/* =====================
+   ACCIONES (GUARDAR / PREVIEW)
+===================== */
+.cv-container .acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+/* =====================
+   RESPONSIVE
+===================== */
+@media (max-width: 768px) {
+
+    .cv-container {
+        padding: 20px;
+    }
+
+    .cv-container .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cv-container .btn-eliminar {
+        width: 100%;
+        border-radius: 12px;
+    }
+
+    .cv-container .acciones {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

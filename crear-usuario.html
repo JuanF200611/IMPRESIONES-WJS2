@@ -1,0 +1,1742 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Usuario | Impresiones WJS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo img {
+            height: 50px;
+            width: 50px;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            background: linear-gradient(135deg, #7f00ff, #e100ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #7f00ff, #e100ff);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Pestañas de tipo de usuario */
+        .user-type-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .type-tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            background: white;
+            border: 2px solid #e1e5eb;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .type-tab:hover {
+            border-color: #7f00ff;
+            color: #7f00ff;
+        }
+
+        .type-tab.active {
+            background: linear-gradient(135deg, #7f00ff, #e100ff);
+            color: white;
+            border-color: #7f00ff;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            height: fit-content;
+        }
+
+        .card-title {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f2f5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title i {
+            color: #7f00ff;
+        }
+
+        /* Formulario de creación */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 6px;
+            color: #555;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e1e5eb;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #7f00ff;
+            box-shadow: 0 0 0 3px rgba(127, 0, 255, 0.1);
+        }
+
+        .select-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e1e5eb;
+            border-radius: 8px;
+            font-size: 14px;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        /* Upload de foto */
+        .photo-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .photo-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 15px;
+        }
+
+        .photo-preview {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #e1e5eb;
+        }
+
+        .photo-upload-btn {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: #7f00ff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .photo-input {
+            display: none;
+        }
+
+        .photo-text {
+            color: #666;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        /* Lista de usuarios */
+        .users-table-container {
+            overflow-x: auto;
+        }
+
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .users-table th {
+            background: #f8f9fa;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 2px solid #e1e5eb;
+            font-size: 14px;
+        }
+
+        .users-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f0f2f5;
+            vertical-align: middle;
+        }
+
+        .users-table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .user-avatar-cell {
+            width: 50px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #e1e5eb;
+        }
+
+        .user-info-cell {
+            min-width: 150px;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .user-username {
+            font-size: 12px;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        .user-type {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .type-admin {
+            background-color: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .type-cliente {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .type-vendedor {
+            background-color: #e8f5e8;
+            color: #388e3c;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: none;
+            background: #f0f2f5;
+            color: #666;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .action-btn:hover {
+            background: #7f00ff;
+            color: white;
+        }
+
+        .action-btn.delete:hover {
+            background: #f44336;
+        }
+
+        /* Buscador */
+        .search-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 2px solid #e1e5eb;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .search-btn {
+            padding: 10px 20px;
+            background: #7f00ff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* Contadores */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #7f00ff;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #666;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            margin-bottom: 20px;
+        }
+
+        /* Mensajes */
+        .message {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 1001;
+            animation: slideIn 0.3s ease-out;
+            max-width: 400px;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .message.success {
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+        }
+
+        .message.error {
+            background: linear-gradient(135deg, #f44336, #c62828);
+        }
+
+        .message.info {
+            background: linear-gradient(135deg, #2196f3, #0d47a1);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Loading para fotos */
+        .photo-loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #7f00ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .nav-buttons {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+
+            .users-table {
+                font-size: 13px;
+            }
+
+            .users-table th,
+            .users-table td {
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <img src="ICONOS/LOGO.JPG" alt="Logo">
+                <h1>Gestión de Usuarios</h1>
+            </div>
+            <div class="nav-buttons">
+                <!-- SOLO QUEDA EL BOTÓN DE ACTUALIZAR -->
+                <button class="btn btn-primary" onclick="recargarUsuarios()">
+                    <i class="fas fa-sync-alt"></i> Actualizar
+                </button>
+            </div>
+        </div>
+
+        <!-- Estadísticas -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-number" id="totalClientes">0</div>
+                <div class="stat-label">Clientes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalVendedores">0</div>
+                <div class="stat-label">Vendedores</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalAdmins">0</div>
+                <div class="stat-label">Administradores</div>
+            </div>
+        </div>
+
+        <!-- Contenido principal -->
+        <div class="main-content">
+            <!-- Formulario para crear usuario -->
+            <div class="card">
+                <h2 class="card-title">
+                    <i class="fas fa-user-plus"></i> Crear Nuevo Usuario
+                </h2>
+                
+                <!-- Pestañas de tipo de usuario -->
+                <div class="user-type-tabs">
+                    <div class="type-tab active" data-type="cliente" onclick="cambiarTipoUsuario('cliente')">
+                        Cliente
+                    </div>
+                    <div class="type-tab" data-type="vendedor" onclick="cambiarTipoUsuario('vendedor')">
+                        Vendedor
+                    </div>
+                    <div class="type-tab" data-type="admin" onclick="cambiarTipoUsuario('admin')">
+                        Administrador
+                    </div>
+                </div>
+
+                <!-- Foto de perfil -->
+                <div class="photo-section">
+                    <div class="photo-container">
+                        <img id="photoPreview" class="photo-preview" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiByeD0iNTAiIGZpbGw9IiM3ZjAwZmYiLz4KPHBhdGggZD0iTTM1IDQwTDUwIDU1TDY1IDQwIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjYiLz4KPC9zdmc+" alt="Foto de perfil">
+                        <button class="photo-upload-btn" onclick="document.getElementById('photoInput').click()">
+                            <i class="fas fa-camera"></i>
+                        </button>
+                        <input type="file" id="photoInput" class="photo-input" accept="image/*">
+                    </div>
+                    <p class="photo-text">Haz clic en la cámara para subir foto</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="nombre">Nombre *</label>
+                    <input type="text" id="nombre" class="form-input" placeholder="Ej: Juan">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="apellido">Apellido *</label>
+                    <input type="text" id="apellido" class="form-input" placeholder="Ej: Pérez">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="telefono">Teléfono</label>
+                    <input type="tel" id="telefono" class="form-input" placeholder="Ej: 809-123-4567">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="direccion">Dirección</label>
+                    <input type="text" id="direccion" class="form-input" placeholder="Ej: Calle Principal #123">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="clave">Contraseña *</label>
+                    <input type="password" id="clave" class="form-input" placeholder="Mínimo 4 caracteres">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="confirmarClave">Confirmar Contraseña *</label>
+                    <input type="password" id="confirmarClave" class="form-input" placeholder="Repite la contraseña">
+                </div>
+
+                <div class="form-group" id="usuarioPersonalizadoGroup" style="display: none;">
+                    <label class="form-label" for="usuarioPersonalizado">Usuario Personalizado</label>
+                    <input type="text" id="usuarioPersonalizado" class="form-input" placeholder="Ej: WJS-VENDEDOR1">
+                    <small style="color: #666; font-size: 11px; display: block; margin-top: 5px;">
+                        Solo para vendedores y administradores
+                    </small>
+                </div>
+
+                <button class="btn btn-primary" onclick="crearUsuario()" style="width: 100%; padding: 12px; margin-top: 10px;">
+                    <i class="fas fa-save"></i> Crear Usuario
+                </button>
+            </div>
+
+            <!-- Lista de usuarios existentes -->
+            <div class="card">
+                <h2 class="card-title">
+                    <i class="fas fa-users"></i> Usuarios Registrados
+                </h2>
+                
+                <!-- Buscador -->
+                <div class="search-container">
+                    <input type="text" id="searchInput" class="search-input" placeholder="Buscar por nombre, usuario o teléfono...">
+                    <button class="search-btn" onclick="buscarUsuarios()">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                
+                <div class="users-table-container">
+                    <table class="users-table">
+                        <thead>
+                            <tr>
+                                <th class="user-avatar-cell">Foto</th>
+                                <th class="user-info-cell">Usuario</th>
+                                <th>Teléfono</th>
+                                <th>Tipo</th>
+                                <th>Fecha Registro</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usuariosLista">
+                            <!-- Los usuarios se cargarán aquí -->
+                            <tr>
+                                <td colspan="6" style="text-align: center; padding: 40px;">
+                                    <div class="spinner" style="margin: 0 auto 15px;"></div>
+                                    <p>Cargando usuarios...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de éxito -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">✅ Usuario Creado Exitosamente</h3>
+                <button class="modal-close" onclick="cerrarModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="margin-bottom: 20px;">
+                    <p><strong>Usuario:</strong> <span id="modalUsuario" style="color: #7f00ff; font-weight: bold;"></span></p>
+                    <p><strong>Contraseña:</strong> <span id="modalClave" style="font-family: monospace;"></span></p>
+                    <p><strong>Nombre:</strong> <span id="modalNombre"></span></p>
+                    <p><strong>Tipo:</strong> <span id="modalTipo"></span></p>
+                </div>
+                <div style="background: #f9f5ff; padding: 15px; border-radius: 8px; border-left: 4px solid #7f00ff;">
+                    <p style="color: #7f00ff; font-size: 14px; margin: 0;">
+                        <i class="fas fa-info-circle"></i> 
+                        Guarda esta información para acceder al sistema
+                    </p>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="cerrarModal()" style="width: 100%;">
+                <i class="fas fa-check"></i> Aceptar
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación para eliminar -->
+    <div class="modal" id="confirmModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fas fa-exclamation-triangle"></i> Confirmar Eliminación</h3>
+                <button class="modal-close" onclick="cerrarConfirmModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estás seguro de eliminar al usuario <strong id="userToDelete"></strong>?</p>
+                <p style="color: #f44336; font-size: 13px; margin-top: 10px;">
+                    <i class="fas fa-exclamation-circle"></i> 
+                    Esta acción no se puede deshacer. El usuario perderá acceso al sistema.
+                </p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-secondary" onclick="cerrarConfirmModal()" style="flex: 1;">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+                <button class="btn btn-primary" onclick="eliminarUsuarioConfirmado()" style="flex: 1; background: linear-gradient(135deg, #f44336, #c62828);">
+                    <i class="fas fa-trash"></i> Eliminar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de edición -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fas fa-edit"></i> Editar Usuario</h3>
+                <button class="modal-close" onclick="cerrarEditModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="editUsuarioId">
+                
+                <div class="form-group">
+                    <label class="form-label" for="editNombre">Nombre *</label>
+                    <input type="text" id="editNombre" class="form-input">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="editApellido">Apellido *</label>
+                    <input type="text" id="editApellido" class="form-input">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="editTelefono">Teléfono</label>
+                    <input type="tel" id="editTelefono" class="form-input">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="editDireccion">Dirección</label>
+                    <input type="text" id="editDireccion" class="form-input">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="editClave">Nueva Contraseña (opcional)</label>
+                    <input type="password" id="editClave" class="form-input" placeholder="Dejar vacío para no cambiar">
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-secondary" onclick="cerrarEditModal()" style="flex: 1;">
+                    Cancelar
+                </button>
+                <button class="btn btn-primary" onclick="guardarCambiosUsuario()" style="flex: 1;">
+                    <i class="fas fa-save"></i> Guardar Cambios
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para cambiar foto -->
+    <div class="modal" id="photoModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fas fa-camera"></i> Cambiar Foto de Perfil</h3>
+                <button class="modal-close" onclick="cerrarPhotoModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="photoUsuarioId">
+                
+                <div class="photo-section">
+                    <div class="photo-container">
+                        <img id="photoModalPreview" class="photo-preview" src="" alt="Foto de perfil">
+                        <button class="photo-upload-btn" onclick="document.getElementById('photoModalInput').click()">
+                            <i class="fas fa-camera"></i>
+                        </button>
+                        <input type="file" id="photoModalInput" class="photo-input" accept="image/*">
+                    </div>
+                    <p class="photo-text">Selecciona una nueva foto</p>
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-secondary" onclick="cerrarPhotoModal()" style="flex: 1;">
+                    Cancelar
+                </button>
+                <button class="btn btn-primary" onclick="guardarNuevaFoto()" style="flex: 1;">
+                    <i class="fas fa-save"></i> Guardar Foto
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mensajes flotantes -->
+    <div class="message" id="message"></div>
+
+    <!-- ================= FIREBASE ================= -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, set, get, update, remove, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+
+        // Configuración de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyB3xTYP7wKgvFvySX8ZkHqm0Tly8y4LcM4",
+            authDomain: "imprecioneswjs.firebaseapp.com",
+            databaseURL: "https://imprecioneswjs-default-rtdb.firebaseio.com",
+            projectId: "imprecioneswjs",
+            storageBucket: "imprecioneswjs.appspot.com",
+            appId: "1:923402098800:web:ef57d1e1bf1fdd758a3cb5"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const storage = getStorage(app);
+
+        // Variables globales
+        let usuarios = [];
+        let usuarioSeleccionadoEliminar = null;
+        let usuarioSeleccionadoEditar = null;
+        let usuarioSeleccionadoFoto = null;
+        let tipoUsuarioActual = 'cliente';
+        let fotoArchivo = null;
+        let fotoModalArchivo = null;
+
+        // Inicializar
+        window.addEventListener('DOMContentLoaded', () => {
+            // Verificar si el usuario está logueado como admin
+            const usuarioActual = sessionStorage.getItem('usuarioActual');
+            const rolUsuario = sessionStorage.getItem('rolUsuario');
+            
+            if (!usuarioActual || rolUsuario !== 'admin') {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // Configurar eventos
+            configurarEventListeners();
+            
+            // Cargar usuarios
+            cargarUsuarios();
+            
+            // Configurar inputs de foto
+            document.getElementById('photoInput').addEventListener('change', manejarFotoSeleccionada);
+            document.getElementById('photoModalInput').addEventListener('change', manejarFotoModalSeleccionada);
+        });
+
+        // Configurar eventos
+        function configurarEventListeners() {
+            // Enter en el buscador
+            document.getElementById('searchInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    buscarUsuarios();
+                }
+            });
+        }
+
+        // Manejar foto seleccionada para nuevo usuario
+        function manejarFotoSeleccionada(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            if (!file.type.startsWith('image/')) {
+                mostrarMensaje('Por favor, selecciona una imagen válida', 'error');
+                return;
+            }
+            
+            if (file.size > 5 * 1024 * 1024) { // 5MB
+                mostrarMensaje('La imagen es demasiado grande (máx. 5MB)', 'error');
+                return;
+            }
+            
+            fotoArchivo = file;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('photoPreview').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Manejar foto seleccionada para modal de edición
+        function manejarFotoModalSeleccionada(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            if (!file.type.startsWith('image/')) {
+                mostrarMensaje('Por favor, selecciona una imagen válida', 'error');
+                return;
+            }
+            
+            if (file.size > 5 * 1024 * 1024) { // 5MB
+                mostrarMensaje('La imagen es demasiado grande (máx. 5MB)', 'error');
+                return;
+            }
+            
+            fotoModalArchivo = file;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('photoModalPreview').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Función para mostrar mensajes
+        window.mostrarMensaje = function(texto, tipo = 'info') {
+            const message = document.getElementById('message');
+            message.innerHTML = `
+                <i class="fas fa-${tipo === 'success' ? 'check-circle' : tipo === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                ${texto}
+            `;
+            message.className = `message ${tipo} show`;
+            
+            setTimeout(() => {
+                message.classList.remove('show');
+            }, 4000);
+        };
+
+        // Cambiar tipo de usuario
+        window.cambiarTipoUsuario = function(tipo) {
+            tipoUsuarioActual = tipo;
+            
+            // Actualizar pestañas
+            document.querySelectorAll('.type-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`[data-type="${tipo}"]`).classList.add('active');
+            
+            // Mostrar/ocultar campo de usuario personalizado
+            const usuarioPersonalizadoGroup = document.getElementById('usuarioPersonalizadoGroup');
+            if (tipo === 'cliente') {
+                usuarioPersonalizadoGroup.style.display = 'none';
+                document.getElementById('usuarioPersonalizado').value = '';
+            } else {
+                usuarioPersonalizadoGroup.style.display = 'block';
+            }
+        };
+
+        // Crear usuario
+        window.crearUsuario = async function() {
+            try {
+                // Obtener valores
+                const nombre = document.getElementById('nombre').value.trim();
+                const apellido = document.getElementById('apellido').value.trim();
+                const telefono = document.getElementById('telefono').value.trim();
+                const direccion = document.getElementById('direccion').value.trim();
+                const clave = document.getElementById('clave').value;
+                const confirmarClave = document.getElementById('confirmarClave').value;
+                const usuarioPersonalizado = document.getElementById('usuarioPersonalizado').value.trim();
+
+                // Validaciones
+                if (!nombre || !apellido || !clave || !confirmarClave) {
+                    mostrarMensaje('Completa todos los campos obligatorios', 'error');
+                    return;
+                }
+
+                if (clave.length < 4) {
+                    mostrarMensaje('La contraseña debe tener al menos 4 caracteres', 'error');
+                    return;
+                }
+
+                if (clave !== confirmarClave) {
+                    mostrarMensaje('Las contraseñas no coinciden', 'error');
+                    return;
+                }
+
+                // Generar usuario según el tipo
+                let usuarioId;
+                if (tipoUsuarioActual === 'cliente') {
+                    usuarioId = await generarIdCliente();
+                } else if (tipoUsuarioActual === 'vendedor') {
+                    usuarioId = usuarioPersonalizado || await generarIdVendedor();
+                } else if (tipoUsuarioActual === 'admin') {
+                    usuarioId = usuarioPersonalizado || await generarIdAdmin();
+                }
+
+                // Verificar si ya existe
+                if (await usuarioExiste(usuarioId, tipoUsuarioActual)) {
+                    mostrarMensaje(`El usuario ${usuarioId} ya existe`, 'error');
+                    return;
+                }
+
+                // Subir foto a Firebase Storage si existe
+                let fotoUrl = null;
+                if (fotoArchivo) {
+                    fotoUrl = await subirFotoStorage(usuarioId, fotoArchivo);
+                }
+
+                // Preparar datos según tu estructura exacta
+                const userData = {
+                    usuario: usuarioId,
+                    nombre: nombre,
+                    apellido: apellido,
+                    telefono: telefono || '',
+                    direccion: direccion || '',
+                    clave: clave,
+                    rol: tipoUsuarioActual,
+                    fotoUrl: fotoUrl, // URL de la foto en Storage
+                    fechaRegistro: new Date().toISOString()
+                };
+
+                // Guardar en Firebase según tipo
+                let rutaFirebase = '';
+                switch(tipoUsuarioActual) {
+                    case 'admin':
+                        rutaFirebase = `usuarios/admin/${usuarioId}`;
+                        break;
+                    case 'vendedor':
+                        rutaFirebase = `usuarios/vendedores/${usuarioId}`;
+                        break;
+                    default:
+                        rutaFirebase = `usuarios/clientes/${usuarioId}`;
+                }
+
+                await set(ref(db, rutaFirebase), userData);
+
+                // Mostrar modal de éxito
+                document.getElementById('modalUsuario').textContent = usuarioId;
+                document.getElementById('modalClave').textContent = clave;
+                document.getElementById('modalNombre').textContent = `${nombre} ${apellido}`;
+                document.getElementById('modalTipo').textContent = 
+                    tipoUsuarioActual === 'admin' ? 'Administrador' :
+                    tipoUsuarioActual === 'vendedor' ? 'Vendedor' : 'Cliente';
+                document.getElementById('successModal').classList.add('show');
+
+                // Limpiar formulario
+                limpiarFormulario();
+
+                // Recargar usuarios
+                cargarUsuarios();
+
+            } catch (error) {
+                console.error('Error creando usuario:', error);
+                mostrarMensaje('Error al crear usuario: ' + error.message, 'error');
+            }
+        };
+
+        // Subir foto a Firebase Storage
+        async function subirFotoStorage(usuarioId, archivo) {
+            try {
+                // Crear nombre único para el archivo
+                const nombreArchivo = `perfil_${usuarioId}_${Date.now()}.jpg`;
+                const rutaStorage = `perfiles/${nombreArchivo}`;
+                
+                // Crear referencia en Storage
+                const referenciaFoto = storageRef(storage, rutaStorage);
+                
+                // Subir el archivo
+                await uploadBytes(referenciaFoto, archivo);
+                
+                // Obtener URL de descarga
+                const urlDescarga = await getDownloadURL(referenciaFoto);
+                
+                return urlDescarga;
+                
+            } catch (error) {
+                console.error('Error subiendo foto a Storage:', error);
+                mostrarMensaje('Error al subir la foto: ' + error.message, 'error');
+                return null;
+            }
+        }
+
+        // Generar ID para cliente (WJS-0001, WJS-0002, etc.)
+        async function generarIdCliente() {
+            try {
+                const snapshot = await get(ref(db, 'usuarios/clientes'));
+                let total = 0;
+                
+                if (snapshot.exists()) {
+                    const clientes = snapshot.val();
+                    // Contar solo los que siguen el formato WJS-XXXX
+                    const ids = Object.keys(clientes).filter(id => id.startsWith('WJS-'));
+                    total = ids.length;
+                }
+                
+                return `WJS-${String(total + 1).padStart(4, '0')}`;
+                
+            } catch (error) {
+                console.error('Error generando ID cliente:', error);
+                return `WJS-${Date.now().toString().slice(-4)}`;
+            }
+        }
+
+        // Generar ID para vendedor (VEN-0001, VEN-0002, etc.)
+        async function generarIdVendedor() {
+            try {
+                const snapshot = await get(ref(db, 'usuarios/vendedores'));
+                let total = 0;
+                
+                if (snapshot.exists()) {
+                    const vendedores = snapshot.val();
+                    total = Object.keys(vendedores).length;
+                }
+                
+                return `VEN-${String(total + 1).padStart(4, '0')}`;
+                
+            } catch (error) {
+                console.error('Error generando ID vendedor:', error);
+                return `VEN-${Date.now().toString().slice(-4)}`;
+            }
+        }
+
+        // Generar ID para admin (WJS-ADMIN1, WJS-ADMIN2, etc.)
+        async function generarIdAdmin() {
+            try {
+                const snapshot = await get(ref(db, 'usuarios/admin'));
+                let total = 0;
+                
+                if (snapshot.exists()) {
+                    const admins = snapshot.val();
+                    total = Object.keys(admins).length;
+                }
+                
+                return `WJS-ADMIN${total + 1}`;
+                
+            } catch (error) {
+                console.error('Error generando ID admin:', error);
+                return `WJS-ADMIN${Date.now().toString().slice(-2)}`;
+            }
+        }
+
+        // Verificar si usuario existe
+        async function usuarioExiste(usuarioId, tipo) {
+            try {
+                let ruta = '';
+                switch(tipo) {
+                    case 'admin':
+                        ruta = `usuarios/admin/${usuarioId}`;
+                        break;
+                    case 'vendedor':
+                        ruta = `usuarios/vendedores/${usuarioId}`;
+                        break;
+                    default:
+                        ruta = `usuarios/clientes/${usuarioId}`;
+                }
+                
+                const snapshot = await get(ref(db, ruta));
+                return snapshot.exists();
+                
+            } catch (error) {
+                console.error('Error verificando usuario:', error);
+                return false;
+            }
+        }
+
+        // Cargar usuarios desde Firebase
+        async function cargarUsuarios() {
+            try {
+                // Obtener todos los tipos de usuarios
+                const [clientesSnapshot, vendedoresSnapshot, adminSnapshot] = await Promise.all([
+                    get(ref(db, 'usuarios/clientes')),
+                    get(ref(db, 'usuarios/vendedores')),
+                    get(ref(db, 'usuarios/admin'))
+                ]);
+                
+                usuarios = [];
+                let totalClientes = 0;
+                let totalVendedores = 0;
+                let totalAdmins = 0;
+                
+                // Procesar clientes
+                if (clientesSnapshot.exists()) {
+                    const clientesData = clientesSnapshot.val();
+                    for (const key in clientesData) {
+                        usuarios.push({
+                            id: key,
+                            ...clientesData[key],
+                            tipo: 'cliente'
+                        });
+                        totalClientes++;
+                    }
+                }
+                
+                // Procesar vendedores
+                if (vendedoresSnapshot.exists()) {
+                    const vendedoresData = vendedoresSnapshot.val();
+                    for (const key in vendedoresData) {
+                        usuarios.push({
+                            id: key,
+                            ...vendedoresData[key],
+                            tipo: 'vendedor'
+                        });
+                        totalVendedores++;
+                    }
+                }
+                
+                // Procesar administradores
+                if (adminSnapshot.exists()) {
+                    const adminData = adminSnapshot.val();
+                    for (const key in adminData) {
+                        usuarios.push({
+                            id: key,
+                            ...adminData[key],
+                            tipo: 'admin'
+                        });
+                        totalAdmins++;
+                    }
+                }
+                
+                // Actualizar contadores
+                document.getElementById('totalClientes').textContent = totalClientes;
+                document.getElementById('totalVendedores').textContent = totalVendedores;
+                document.getElementById('totalAdmins').textContent = totalAdmins;
+                
+                // Ordenar por fecha de registro (más reciente primero)
+                usuarios.sort((a, b) => {
+                    const fechaA = a.fechaRegistro ? new Date(a.fechaRegistro) : new Date(0);
+                    const fechaB = b.fechaRegistro ? new Date(b.fechaRegistro) : new Date(0);
+                    return fechaB - fechaA;
+                });
+                
+                // Renderizar usuarios
+                renderizarUsuarios();
+                
+            } catch (error) {
+                console.error('Error cargando usuarios:', error);
+                mostrarMensaje('Error cargando usuarios: ' + error.message, 'error');
+            }
+        }
+
+        // Renderizar usuarios en tabla
+        function renderizarUsuarios() {
+            const tbody = document.getElementById('usuariosLista');
+            
+            if (usuarios.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px; color: #666;">
+                            <i class="fas fa-users" style="font-size: 48px; margin-bottom: 15px; color: #d1d5db;"></i>
+                            <h4 style="margin-bottom: 10px;">No hay usuarios registrados</h4>
+                            <p>Crea tu primer usuario usando el formulario</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            let html = '';
+            
+            for (const usuario of usuarios) {
+                // Determinar clase de tipo
+                let tipoClass = 'type-cliente';
+                let tipoText = 'Cliente';
+                
+                if (usuario.tipo === 'admin' || usuario.rol === 'admin') {
+                    tipoClass = 'type-admin';
+                    tipoText = 'Admin';
+                } else if (usuario.tipo === 'vendedor' || usuario.rol === 'vendedor') {
+                    tipoClass = 'type-vendedor';
+                    tipoText = 'Vendedor';
+                }
+                
+                // Formatear fecha
+                let fechaFormateada = 'Sin fecha';
+                if (usuario.fechaRegistro) {
+                    try {
+                        const fecha = new Date(usuario.fechaRegistro);
+                        fechaFormateada = fecha.toLocaleDateString('es-DO', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric'
+                        });
+                    } catch (e) {
+                        fechaFormateada = 'Fecha inválida';
+                    }
+                }
+                
+                html += `
+                    <tr>
+                        <td class="user-avatar-cell">
+                            <div style="position: relative;">
+                                <img src="${usuario.fotoUrl || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiByeD0iNTAiIGZpbGw9IiM3ZjAwZmYiLz4KPHBhdGggZD0iTTM1IDQwTDUwIDU1TDY1IDQwIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjYiLz4KPC9zdmc+'}" 
+                                     alt="${usuario.nombre}" 
+                                     class="user-avatar"
+                                     onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiByeD0iNTAiIGZpbGw9IiM3ZjAwZmYiLz4KPHBhdGggZD0iTTM1IDQwTDUwIDU1TDY1IDQwIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjYiLz4KPC9zdmc+'">
+                            </div>
+                        </td>
+                        <td class="user-info-cell">
+                            <div class="user-name">${usuario.nombre} ${usuario.apellido}</div>
+                            <div class="user-username">${usuario.id}</div>
+                            <small style="color: #888; font-size: 11px;">${usuario.direccion || 'Sin dirección'}</small>
+                        </td>
+                        <td>${usuario.telefono || 'Sin teléfono'}</td>
+                        <td>
+                            <span class="user-type ${tipoClass}">${tipoText}</span>
+                        </td>
+                        <td>${fechaFormateada}</td>
+                        <td>
+                            <div class="user-actions">
+                                <button class="action-btn" onclick="cambiarFotoUsuario('${usuario.id}')" title="Cambiar Foto">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                                <button class="action-btn" onclick="editarUsuario('${usuario.id}')" title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn delete" onclick="eliminarUsuario('${usuario.id}', '${usuario.nombre} ${usuario.apellido}')" title="Eliminar">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
+            
+            tbody.innerHTML = html;
+        }
+
+        // Buscar usuarios
+        window.buscarUsuarios = function() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+            
+            if (!searchTerm) {
+                renderizarUsuarios();
+                return;
+            }
+            
+            const usuariosFiltrados = usuarios.filter(usuario => {
+                return (
+                    (usuario.nombre && usuario.nombre.toLowerCase().includes(searchTerm)) ||
+                    (usuario.apellido && usuario.apellido.toLowerCase().includes(searchTerm)) ||
+                    (usuario.id && usuario.id.toLowerCase().includes(searchTerm)) ||
+                    (usuario.telefono && usuario.telefono.includes(searchTerm)) ||
+                    (usuario.direccion && usuario.direccion.toLowerCase().includes(searchTerm))
+                );
+            });
+            
+            // Renderizar usuarios filtrados
+            const tbody = document.getElementById('usuariosLista');
+            
+            if (usuariosFiltrados.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px; color: #666;">
+                            <i class="fas fa-search" style="font-size: 48px; margin-bottom: 15px; color: #d1d5db;"></i>
+                            <h4 style="margin-bottom: 10px;">No se encontraron usuarios</h4>
+                            <p>Intenta con otros términos de búsqueda</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            let html = '';
+            
+            for (const usuario of usuariosFiltrados) {
+                let tipoClass = 'type-cliente';
+                let tipoText = 'Cliente';
+                
+                if (usuario.tipo === 'admin' || usuario.rol === 'admin') {
+                    tipoClass = 'type-admin';
+                    tipoText = 'Admin';
+                } else if (usuario.tipo === 'vendedor' || usuario.rol === 'vendedor') {
+                    tipoClass = 'type-vendedor';
+                    tipoText = 'Vendedor';
+                }
+                
+                let fechaFormateada = 'Sin fecha';
+                if (usuario.fechaRegistro) {
+                    try {
+                        const fecha = new Date(usuario.fechaRegistro);
+                        fechaFormateada = fecha.toLocaleDateString('es-DO', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric'
+                        });
+                    } catch (e) {
+                        fechaFormateada = 'Fecha inválida';
+                    }
+                }
+                
+                html += `
+                    <tr>
+                        <td class="user-avatar-cell">
+                            <img src="${usuario.fotoUrl || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiByeD0iNTAiIGZpbGw9IiM3ZjAwZmYiLz4KPHBhdGggZD0iTTM1IDQwTDUwIDU1TDY1IDQwIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjYiLz4KPC9zdmc+'}" 
+                                 alt="${usuario.nombre}" 
+                                 class="user-avatar"
+                                 onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiByeD0iNTAiIGZpbGw9IiM3ZjAwZmYiLz4KPHBhdGggZD0iTTM1IDQwTDUwIDU1TDY1IDQwIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjYiLz4KPC9zdmc+'">
+                        </td>
+                        <td class="user-info-cell">
+                            <div class="user-name">${usuario.nombre} ${usuario.apellido}</div>
+                            <div class="user-username">${usuario.id}</div>
+                            <small style="color: #888; font-size: 11px;">${usuario.direccion || 'Sin dirección'}</small>
+                        </td>
+                        <td>${usuario.telefono || 'Sin teléfono'}</td>
+                        <td>
+                            <span class="user-type ${tipoClass}">${tipoText}</span>
+                        </td>
+                        <td>${fechaFormateada}</td>
+                        <td>
+                            <div class="user-actions">
+                                <button class="action-btn" onclick="cambiarFotoUsuario('${usuario.id}')" title="Cambiar Foto">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                                <button class="action-btn" onclick="editarUsuario('${usuario.id}')" title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn delete" onclick="eliminarUsuario('${usuario.id}', '${usuario.nombre} ${usuario.apellido}')" title="Eliminar">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
+            
+            tbody.innerHTML = html;
+        };
+
+        // Cambiar foto de usuario
+        window.cambiarFotoUsuario = function(usuarioId) {
+            try {
+                // Buscar usuario
+                const usuario = usuarios.find(u => u.id === usuarioId);
+                if (!usuario) {
+                    mostrarMensaje('Usuario no encontrado', 'error');
+                    return;
+                }
+                
+                usuarioSeleccionadoFoto = usuario;
+                fotoModalArchivo = null;
+                
+                // Configurar preview con foto actual si existe
+                document.getElementById('photoModalPreview').src = usuario.fotoUrl || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiByeD0iNTAiIGZpbGw9IiM3ZjAwZmYiLz4KPHBhdGggZD0iTTM1IDQwTDUwIDU1TDY1IDQwIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjYiLz4KPC9zdmc+';
+                document.getElementById('photoUsuarioId').value = usuarioId;
+                
+                // Mostrar modal
+                document.getElementById('photoModal').classList.add('show');
+                
+            } catch (error) {
+                console.error('Error abriendo modal de foto:', error);
+                mostrarMensaje('Error al cargar foto: ' + error.message, 'error');
+            }
+        };
+
+        // Guardar nueva foto
+        window.guardarNuevaFoto = async function() {
+            try {
+                if (!usuarioSeleccionadoFoto) {
+                    mostrarMensaje('No se seleccionó usuario', 'error');
+                    return;
+                }
+                
+                const usuarioId = document.getElementById('photoUsuarioId').value;
+                
+                if (!fotoModalArchivo) {
+                    mostrarMensaje('Debes seleccionar una nueva foto', 'error');
+                    return;
+                }
+                
+                // Subir nueva foto a Firebase Storage
+                const nuevaFotoUrl = await subirFotoStorage(usuarioId, fotoModalArchivo);
+                if (!nuevaFotoUrl) {
+                    mostrarMensaje('Error al subir la nueva foto', 'error');
+                    return;
+                }
+                
+                // Determinar ruta según tipo
+                let rutaFirebase = '';
+                if (usuarioSeleccionadoFoto.tipo === 'admin' || usuarioSeleccionadoFoto.rol === 'admin') {
+                    rutaFirebase = `usuarios/admin/${usuarioId}`;
+                } else if (usuarioSeleccionadoFoto.tipo === 'vendedor' || usuarioSeleccionadoFoto.rol === 'vendedor') {
+                    rutaFirebase = `usuarios/vendedores/${usuarioId}`;
+                } else {
+                    rutaFirebase = `usuarios/clientes/${usuarioId}`;
+                }
+                
+                // Actualizar en Firebase con nueva URL
+                await update(ref(db, rutaFirebase), {
+                    fotoUrl: nuevaFotoUrl,
+                    fechaActualizado: new Date().toISOString()
+                });
+                
+                // Cerrar modal y mostrar mensaje
+                cerrarPhotoModal();
+                mostrarMensaje(`Foto de ${usuarioId} actualizada correctamente`, 'success');
+                
+                // Recargar usuarios
+                cargarUsuarios();
+                
+            } catch (error) {
+                console.error('Error guardando nueva foto:', error);
+                mostrarMensaje('Error al guardar nueva foto: ' + error.message, 'error');
+            }
+        };
+
+        // Eliminar usuario
+        window.eliminarUsuario = function(usuarioId, nombreCompleto) {
+            usuarioSeleccionadoEliminar = usuarioId;
+            document.getElementById('userToDelete').textContent = nombreCompleto;
+            document.getElementById('confirmModal').classList.add('show');
+        };
+
+        window.eliminarUsuarioConfirmado = async function() {
+            if (!usuarioSeleccionadoEliminar) return;
+            
+            try {
+                // Buscar usuario para determinar su tipo
+                const usuario = usuarios.find(u => u.id === usuarioSeleccionadoEliminar);
+                if (!usuario) {
+                    mostrarMensaje('Usuario no encontrado', 'error');
+                    return;
+                }
+                
+                // Determinar ruta según tipo
+                let rutaFirebase = '';
+                if (usuario.tipo === 'admin' || usuario.rol === 'admin') {
+                    rutaFirebase = `usuarios/admin/${usuarioSeleccionadoEliminar}`;
+                } else if (usuario.tipo === 'vendedor' || usuario.rol === 'vendedor') {
+                    rutaFirebase = `usuarios/vendedores/${usuarioSeleccionadoEliminar}`;
+                } else {
+                    rutaFirebase = `usuarios/clientes/${usuarioSeleccionadoEliminar}`;
+                }
+                
+                // Eliminar de Firebase Database
+                await remove(ref(db, rutaFirebase));
+                
+                // Si tiene foto, eliminar de Storage también
+                if (usuario.fotoUrl) {
+                    try {
+                        // Extraer la ruta del Storage de la URL
+                        const urlParts = usuario.fotoUrl.split('/');
+                        const filename = urlParts[urlParts.length - 1];
+                        const filePath = `perfiles/${filename}`;
+                        
+                        const fotoRef = storageRef(storage, filePath);
+                        await deleteObject(fotoRef);
+                    } catch (storageError) {
+                        console.warn('Error eliminando foto de Storage:', storageError);
+                        // Continuar aunque falle la eliminación de la foto
+                    }
+                }
+                
+                // Cerrar modal y mostrar mensaje
+                cerrarConfirmModal();
+                mostrarMensaje(`Usuario ${usuarioSeleccionadoEliminar} eliminado correctamente`, 'success');
+                
+                // Recargar usuarios
+                cargarUsuarios();
+                
+            } catch (error) {
+                console.error('Error eliminando usuario:', error);
+                mostrarMensaje('Error al eliminar usuario: ' + error.message, 'error');
+            }
+        };
+
+        // Editar usuario
+        window.editarUsuario = async function(usuarioId) {
+            try {
+                // Buscar usuario
+                const usuario = usuarios.find(u => u.id === usuarioId);
+                if (!usuario) {
+                    mostrarMensaje('Usuario no encontrado', 'error');
+                    return;
+                }
+                
+                usuarioSeleccionadoEditar = usuario;
+                
+                // Llenar formulario de edición
+                document.getElementById('editUsuarioId').value = usuario.id;
+                document.getElementById('editNombre').value = usuario.nombre || '';
+                document.getElementById('editApellido').value = usuario.apellido || '';
+                document.getElementById('editTelefono').value = usuario.telefono || '';
+                document.getElementById('editDireccion').value = usuario.direccion || '';
+                document.getElementById('editClave').value = '';
+                
+                // Mostrar modal
+                document.getElementById('editModal').classList.add('show');
+                
+            } catch (error) {
+                console.error('Error editando usuario:', error);
+                mostrarMensaje('Error al cargar usuario: ' + error.message, 'error');
+            }
+        };
+
+        // Guardar cambios del usuario
+        window.guardarCambiosUsuario = async function() {
+            try {
+                if (!usuarioSeleccionadoEditar) return;
+                
+                const usuarioId = document.getElementById('editUsuarioId').value;
+                const nombre = document.getElementById('editNombre').value.trim();
+                const apellido = document.getElementById('editApellido').value.trim();
+                const telefono = document.getElementById('editTelefono').value.trim();
+                const direccion = document.getElementById('editDireccion').value.trim();
+                const nuevaClave = document.getElementById('editClave').value;
+                
+                // Validaciones
+                if (!nombre || !apellido) {
+                    mostrarMensaje('Nombre y apellido son obligatorios', 'error');
+                    return;
+                }
+                
+                // Determinar ruta según tipo
+                let rutaFirebase = '';
+                if (usuarioSeleccionadoEditar.tipo === 'admin' || usuarioSeleccionadoEditar.rol === 'admin') {
+                    rutaFirebase = `usuarios/admin/${usuarioId}`;
+                } else if (usuarioSeleccionadoEditar.tipo === 'vendedor' || usuarioSeleccionadoEditar.rol === 'vendedor') {
+                    rutaFirebase = `usuarios/vendedores/${usuarioId}`;
+                } else {
+                    rutaFirebase = `usuarios/clientes/${usuarioId}`;
+                }
+                
+                // Preparar actualizaciones
+                const updates = {
+                    nombre: nombre,
+                    apellido: apellido,
+                    telefono: telefono || '',
+                    direccion: direccion || '',
+                    fechaActualizado: new Date().toISOString()
+                };
+                
+                // Si hay nueva contraseña, actualizarla
+                if (nuevaClave) {
+                    if (nuevaClave.length < 4) {
+                        mostrarMensaje('La contraseña debe tener al menos 4 caracteres', 'error');
+                        return;
+                    }
+                    updates.clave = nuevaClave;
+                }
+                
+                // Actualizar en Firebase
+                await update(ref(db, rutaFirebase), updates);
+                
+                // Cerrar modal y mostrar mensaje
+                cerrarEditModal();
+                mostrarMensaje(`Usuario ${usuarioId} actualizado correctamente`, 'success');
+                
+                // Recargar usuarios
+                cargarUsuarios();
+                
+            } catch (error) {
+                console.error('Error guardando cambios:', error);
+                mostrarMensaje('Error al guardar cambios: ' + error.message, 'error');
+            }
+        };
+
+        // Funciones auxiliares
+        window.cerrarModal = function() {
+            document.getElementById('successModal').classList.remove('show');
+        };
+
+        window.cerrarConfirmModal = function() {
+            document.getElementById('confirmModal').classList.remove('show');
+            usuarioSeleccionadoEliminar = null;
+        };
+
+        window.cerrarEditModal = function() {
+            document.getElementById('editModal').classList.remove('show');
+            usuarioSeleccionadoEditar = null;
+        };
+
+        window.cerrarPhotoModal = function() {
+            document.getElementById('photoModal').classList.remove('show');
+            usuarioSeleccionadoFoto = null;
+            fotoModalArchivo = null;
+        };
+
+        window.recargarUsuarios = function() {
+            cargarUsuarios();
+            mostrarMensaje('Lista de usuarios actualizada', 'success');
+        };
+
+        function limpiarFormulario() {
+            document.getElementById('nombre').value = '';
+            document.getElementById('apellido').value = '';
+            document.getElementById('telefono').value = '';
+            document.getElementById('direccion').value = '';
+            document.getElementById('clave').value = '';
+            document.getElementById('confirmarClave').value = '';
+            document.getElementById('usuarioPersonalizado').value = '';
+            
+            // Restablecer foto
+            fotoArchivo = null;
+            document.getElementById('photoPreview').src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiByeD0iNTAiIGZpbGw9IiM3ZjAwZmYiLz4KPHBhdGggZD0iTTM1IDQwTDUwIDU1TDY1IDQwIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjYiLz4KPC9zdmc+';
+            document.getElementById('photoInput').value = '';
+        }
+
+    </script>
+</body>
+</html>
