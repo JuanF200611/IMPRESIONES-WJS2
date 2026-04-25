@@ -89,114 +89,144 @@ body {
     padding: 15px;
     gap: 15px;
 }
-
-/* 🟢 Grid de productos - BLOQUES CUADRADOS 🟢 */
 .productos-grid {
     flex: 1;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(auto-fill, 175px); /* 🔥 tamaño fijo REAL */
+    gap: 6px; /* pegaditas */
+    justify-content: flex-start; /* 👈 clave */
+    align-content: flex-start; /* 👈 evita espacios verticales */
     overflow-y: auto;
     padding: 10px;
-    max-height: calc(100vh - 120px);
 }
-
-/* 🟢 Tarjeta de producto - BLOQUE CUADRADO 🟢 */
+/* 🟢 TARJETA DE PRODUCTO 🟢 */
 .producto-card {
     background: white;
-    border-radius: 16px;
+    border-radius: 14px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.25s ease;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     border: 1px solid #eef2f7;
-    aspect-ratio: 1 / 1.1;
+    aspect-ratio: 1 / 1.2;
 }
 
+/* EFECTO HOVER */
 .producto-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-5px) scale(1.01);
     border-color: #7f00ff;
-    box-shadow: 0 8px 20px rgba(127, 0, 255, 0.15);
+    box-shadow: 0 10px 25px rgba(127, 0, 255, 0.18);
 }
 
-/* 🟢 Imagen del producto - AJUSTADA AL BLOQUE 🟢 */
+/* 🟢 IMAGEN DEL PRODUCTO 🟢 */
 .producto-img {
     width: 100%;
-    height: 120px;
+    height: 150px; /* más grande */
     overflow: hidden;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 12px;
+    padding: 10px;
 }
 
 .producto-img img {
-    max-width: 90%;
-    max-height: 90%;
+    max-width: 95%;
+    max-height: 95%;
     object-fit: contain;
     transition: transform 0.3s ease;
 }
 
 .producto-card:hover .producto-img img {
-    transform: scale(1.05);
+    transform: scale(1.08);
 }
 
-/* 🟢 Información del producto 🟢 */
+/* 🟢 INFORMACIÓN 🟢 */
 .producto-info {
-    padding: 12px;
+    padding: 14px;
     flex: 1;
     display: flex;
     flex-direction: column;
 }
 
+/* NOMBRE */
 .producto-info h4 {
-    margin: 0 0 6px 0;
-    font-size: 13px;
-    color: #333;
+    margin: 0 0 8px 0;
+    font-size: 15px; /* más grande */
+    color: #222;
     font-weight: 600;
     line-height: 1.4;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    min-height: 36px;
+    min-height: 40px;
 }
 
+/* PRECIO */
 .producto-precio {
-    font-size: 16px;
-    font-weight: 700;
+    font-size: 20px; /* más visible */
+    font-weight: 800;
     color: #7f00ff;
-    margin: 4px 0;
+    margin: 6px 0;
 }
 
+/* DETALLES */
 .producto-details {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 8px 0 4px;
+    margin: 10px 0 6px;
+    font-size: 12px;
+}
+
+/* ID */
+.producto-id {
+    color: #777;
+    background: #f1f1f1;
+    padding: 4px 8px;
+    border-radius: 10px;
+    font-family: monospace;
     font-size: 11px;
 }
 
-.producto-id {
-    color: #888;
-    background: #f5f5f5;
-    padding: 3px 8px;
-    border-radius: 10px;
-    font-family: monospace;
-    font-size: 10px;
-}
-
+/* STOCK */
 .producto-stock {
-    padding: 3px 8px;
+    padding: 4px 10px;
     border-radius: 12px;
     font-weight: 600;
-    font-size: 10px;
+    font-size: 11px;
     display: flex;
     align-items: center;
     gap: 4px;
+}
+
+.stock-bajo {
+    background: rgba(244, 67, 54, 0.15);
+    color: #f44336;
+}
+
+.stock-medio {
+    background: rgba(255, 152, 0, 0.15);
+    color: #ff9800;
+}
+
+.stock-alto {
+    background: rgba(76, 175, 80, 0.15);
+    color: #4caf50;
+}
+
+/* CATEGORÍA */
+.producto-categoria {
+    margin-top: auto;
+    font-size: 11px;
+    color: #888;
+    background: #f4f4f4;
+    padding: 5px 10px;
+    border-radius: 10px;
+    display: inline-block;
+    align-self: flex-start;
 }
 
 .stock-bajo {
