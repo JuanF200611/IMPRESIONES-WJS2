@@ -89,28 +89,31 @@ body {
     padding: 15px;
     gap: 15px;
 }
+/* 🟢 GRID COMPACTO 🟢 */
 .productos-grid {
     flex: 1;
     display: grid;
-    grid-template-columns: repeat(auto-fill, 175px); /* 🔥 tamaño fijo REAL */
-    gap: 6px; /* pegaditas */
-    justify-content: flex-start; /* 👈 clave */
-    align-content: flex-start; /* 👈 evita espacios verticales */
+    grid-template-columns: repeat(auto-fill, 180px); /* tamaño fijo */
+    gap: 8px;
+    justify-content: flex-start;
+    align-content: flex-start;
     overflow-y: auto;
     padding: 10px;
 }
-/* 🟢 TARJETA DE PRODUCTO 🟢 */
+
+/* 🟢 TARJETA 🟢 */
 .producto-card {
     background: white;
-    border-radius: 14px;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    transition: all 0.25s ease;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    transition: 0.2s ease;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     border: 1px solid #eef2f7;
-    aspect-ratio: 1 / 1.2;
+
+    height: 240px; /* 🔥 altura fija */
 }
 
 /* EFECTO HOVER */
